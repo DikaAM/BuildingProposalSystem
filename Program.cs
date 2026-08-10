@@ -1,6 +1,7 @@
 using BuildingProposalSystem.Data;
-using Microsoft.EntityFrameworkCore;
-using BuildingProposalSystem.Data;
+using BuildingProposalSystem.Data.Seed;
+using BuildingProposalSystem.Models.Entities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,7 +13,28 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+// Tambahkan konfigurasi Identity untuk menggunakan ApplicationUser
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+    .AddEntityFrameworkStores<ApplicationDbContext>()
+    .AddDefaultTokenProviders();
+
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    try
+    {
+        await RoleSeeder.SeedRolesAsync(scope.ServiceProvider);
+        await UserSeeder.SeedUsersAsync(scope.ServiceProvider);
+    }
+    catch (Exception ex)
+    {
+        var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
+        logger.LogError(ex, "Terjadi kesalahan saat melakukan penambahan data.");
+      
+    }
+
+}
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -24,6 +46,8 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseRouting();
+
+app.UseAuthentication(); 
 
 app.UseAuthorization();
 
