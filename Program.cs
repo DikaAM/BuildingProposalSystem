@@ -1,6 +1,9 @@
 using BuildingProposalSystem.Data;
 using BuildingProposalSystem.Data.Seed;
+using BuildingProposalSystem.Models;
 using BuildingProposalSystem.Models.Entities;
+using BuildingProposalSystem.Services.Implementations;
+using BuildingProposalSystem.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -22,6 +25,9 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 })
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
+
+builder.Services.Configure<RecaptchaSettings>(builder.Configuration.GetSection("Recaptcha"));
+builder.Services.AddHttpClient<IRecaptchaService, RecaptchaService>();
 
 var app = builder.Build();
 

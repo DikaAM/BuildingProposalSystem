@@ -1,5 +1,6 @@
 ﻿using BuildingProposalSystem.Models.Entities;
 using BuildingProposalSystem.Models.ViewModels;
+using BuildingProposalSystem.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,11 +10,18 @@ namespace BuildingProposalSystem.Controllers
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IRecaptchaService _recaptchaService;
+        private readonly ILogger<AccountController> _logger;
 
-        public AccountController(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager)
+        public AccountController(
+            SignInManager<ApplicationUser> signInManager,
+            UserManager<ApplicationUser> userManager,
+            IRecaptchaService recaptchaService, ILogger<AccountController> logger) 
         {
             _signInManager = signInManager;
             _userManager = userManager;
+            _recaptchaService = recaptchaService;
+            _logger = logger;
         }
 
         [HttpGet]
@@ -24,12 +32,34 @@ namespace BuildingProposalSystem.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         [Route("Account/Masuk")]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
             if (!ModelState.IsValid)
             {
+                return View(model);
+            }
+
+            //Validasi captcha 
+
+
+           
+            var recaptchaToken = Request.Form["g-recaptcha-response"];
+
+            if (string.IsNullOrEmpty(recaptchaToken))
+            {
+                ModelState.AddModelError(string.Empty, "Silakan centang reCAPTCHA terlebih dahulu.");
+                return View(model);
+            }
+
+            var isRecaptchaValid = await _recaptchaService.VerifyAsync(recaptchaToken!);
+
+
+
+            if (!isRecaptchaValid)
+            {
+                ModelState.AddModelError(string.Empty, "Verifikasi reCAPTCHA gagal. Silakan coba lagi.");
                 return View(model);
             }
 
@@ -38,7 +68,7 @@ namespace BuildingProposalSystem.Controllers
 
             if (user == null)
             {
-                ModelState.AddModelError(string.Empty, "Username atau Email tidak ditemukan.");
+                ModelState.AddModelError(string.Empty, "Username/Email atau Password salah.");
                 return View(model);
             }
             var result = await _signInManager.PasswordSignInAsync(
@@ -54,6 +84,7 @@ namespace BuildingProposalSystem.Controllers
 
             if (result.IsLockedOut)
             {
+
                 ModelState.AddModelError(string.Empty, "Akun terkunci karena terlalu banyak percobaan gagal. Coba lagi nanti.");
                 return View(model);
             }
