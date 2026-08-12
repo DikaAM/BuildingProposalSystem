@@ -26,9 +26,19 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
 
+// Custom waktu session untuk login
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.ExpireTimeSpan = TimeSpan.FromHours(24); 
+    options.SlidingExpiration = true; 
+});
+
 builder.Services.Configure<RecaptchaSettings>(builder.Configuration.GetSection("Recaptcha"));
 builder.Services.AddHttpClient<IRecaptchaService, RecaptchaService>();
 builder.Services.AddMemoryCache();
+
+builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
+builder.Services.AddScoped<IEmailService, EmailService>();
 
 var app = builder.Build();
 

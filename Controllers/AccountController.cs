@@ -4,6 +4,7 @@ using BuildingProposalSystem.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
+using System.Net;
 
 
 namespace BuildingProposalSystem.Controllers
@@ -14,14 +15,17 @@ namespace BuildingProposalSystem.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IRecaptchaService _recaptchaService;
         private readonly ILogger<AccountController> _logger;
-        private readonly IMemoryCache _memoryCache; 
+        private readonly IMemoryCache _memoryCache;
+        private readonly IEmailService _emailService;
+
 
 
         public AccountController(
             SignInManager<ApplicationUser> signInManager,
             UserManager<ApplicationUser> userManager,
             IRecaptchaService recaptchaService, ILogger<AccountController> logger,
-            IMemoryCache memoryCache) 
+            IMemoryCache memoryCache,
+            IEmailService emailService)
 
         {
             _signInManager = signInManager;
@@ -29,6 +33,8 @@ namespace BuildingProposalSystem.Controllers
             _recaptchaService = recaptchaService;
             _logger = logger;
             _memoryCache = memoryCache;
+            _emailService = emailService;
+
         }
 
         [HttpGet]
@@ -191,7 +197,6 @@ namespace BuildingProposalSystem.Controllers
             if (!isCodeValid)
             {
                 ModelState.AddModelError(string.Empty, "Kode tidak valid. Pastikan waktu di HP kamu sinkron.");
-                TempData.Keep("2FASetupUserId");
                 return View(model);
             }
 
@@ -250,5 +255,122 @@ namespace BuildingProposalSystem.Controllers
             ModelState.AddModelError(string.Empty, "Kode 2FA salah.");
             return View(model);
         }
+
+        // LOGOUT
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync();
+            _logger.LogInformation("User berhasil logout.");
+            return RedirectToAction("Login");
+        }
+
+
+        // LUPA PASSWORD
+
+        [HttpGet]
+        public IActionResult ForgotPassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var user = await _userManager.FindByEmailAsync(model.Email);
+
+           
+            if (user != null)
+            {
+                var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+                //var encodedToken = WebUtility.UrlEncode(token);
+
+                var resetLink = Url.Action("ResetPassword", "Account",
+                    new { email = user.Email, token = token },
+                    protocol: Request.Scheme);
+
+                var emailBody = $"""
+            <p>Halo {user.FullName},</p>
+            <p>Klik link berikut untuk reset password kamu:</p>
+            <p><a href="{resetLink}">Reset Password</a></p>
+            <p>Link ini berlaku 1 hari. Kalau kamu tidak meminta reset password, abaikan email ini.</p>
+            """;
+
+                try
+                {
+                    await _emailService.SendEmailAsync(user.Email!, "Reset Password - BuildingProposalSystem", emailBody);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Gagal mengirim email reset password untuk {Email}", user.Email);
+                   
+                }
+            }
+
+            ViewBag.Message = "Jika email terdaftar, link reset password telah dikirim.";
+            return View();
+        }
+
+
+        // RESET PASSWORD
+
+        [HttpGet]
+        public IActionResult ResetPassword(string email, string token)
+        {
+            if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(token))
+            {
+                return RedirectToAction("Login");
+            }
+
+            var model = new ResetPasswordViewModel
+            {
+                Email = email,
+                Token = token 
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var user = await _userManager.FindByEmailAsync(model.Email);
+
+            if (user == null)
+            {
+                ViewBag.Message = "Password berhasil direset.";
+                return View("ResetPasswordConfirmation");
+            }
+
+            var result = await _userManager.ResetPasswordAsync(user, model.Token, model.NewPassword);
+
+            if (result.Succeeded)
+            {
+                _logger.LogInformation("Password berhasil direset untuk {Email}", user.Email);
+                return View("ResetPasswordConfirmation");
+            }
+
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error.Description);
+            }
+
+            return View(model);
+        }
+
+
     }
 }
