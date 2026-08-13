@@ -1637,3 +1637,106 @@ textarea {
             margin-left: 3px !important;
         }
 }
+
+/* =========================================================
+   PROPOSAL FORM
+========================================================= */
+
+.content-card-body {
+    padding: 24px;
+}
+
+.form-section {
+    padding-bottom: 24px;
+    margin-bottom: 24px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+    .form-section:last-of-type {
+        margin-bottom: 0;
+        border-bottom: none;
+    }
+
+.form-section-title {
+    margin-bottom: 18px;
+    color: #1e293b;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.form-label {
+    margin-bottom: 7px;
+    color: #334155;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.form-control,
+.form-select {
+    min-height: 40px;
+    border: 1px solid #d8dee8;
+    border-radius: 7px;
+    color: #334155;
+    font-size: 14px;
+}
+
+    .form-control:focus,
+    .form-select:focus {
+        border-color: #2563eb;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.10);
+    }
+
+textarea.form-control {
+    min-height: 100px;
+    resize: vertical;
+}
+
+.form-control::placeholder {
+    color: #94a3b8;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    padding-top: 4px;
+}
+
+    .form-actions .btn {
+        min-width: 110px;
+    }
+
+
+/* Validation */
+
+.field-validation-error {
+    display: block;
+    margin-top: 5px;
+    font-size: 13px;
+}
+
+.validation-summary-errors {
+    margin-bottom: 20px;
+}
+
+.validation-summary-valid {
+    display: none;
+}
+
+
+/* Responsive */
+
+@media (max-width: 768px) {
+
+    .content-card-body {
+        padding: 18px;
+    }
+
+    .form-actions {
+        flex-direction: column-reverse;
+    }
+
+        .form-actions .btn {
+            width: 100%;
+        }
+}

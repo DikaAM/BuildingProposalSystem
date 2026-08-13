@@ -60,6 +60,9 @@ builder.Services.AddMemoryCache();
 builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
 builder.Services.AddScoped<IEmailService, EmailService>();
 
+builder.Services.AddScoped<IProposalNumberService, ProposalNumberService>();
+builder.Services.AddScoped<IProposalService, ProposalService>();
+
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())

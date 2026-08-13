@@ -1,0 +1,188 @@
+﻿@model BuildingProposalSystem.Models.ViewModels.ProposalCreateViewModel
+
+@{
+    ViewData["Title"] = "Buat Proposal";
+}
+
+<div class="page-header">
+    <div>
+        <h1 class="page-header-title">Buat Proposal Baru</h1>
+        <p class="page-header-subtitle">
+            Buat pengajuan pembangunan gedung baru.
+        </p>
+    </div>
+
+    <div>
+        <a asp-action="Index" class="btn btn-outline-secondary">
+            Kembali
+        </a>
+    </div>
+</div>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success page-alert">
+        @TempData["SuccessMessage"]
+    </div>
+}
+
+<div class="content-card">
+
+    <div class="content-card-header">
+        <div>
+            <h2>Informasi Proposal</h2>
+            <p>
+                Lengkapi informasi proposal sebelum menyimpan draft.
+            </p>
+        </div>
+    </div>
+
+    <div class="content-card-body">
+
+        <form asp-action="Create" method="post">
+
+            <div asp-validation-summary="ModelOnly"
+                 class="alert alert-danger"
+                 role="alert"></div>
+
+
+            <div class="form-section">
+
+                <div class="form-section-title">
+                    Informasi Dasar
+                </div>
+
+                <div class="row">
+
+                    <div class="col-md-6 mb-3">
+
+                        <label asp-for="ProposalDate"
+                               class="form-label">
+                        </label>
+
+                        <input asp-for="ProposalDate"
+                               class="form-control" />
+
+                        <span asp-validation-for="ProposalDate"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+
+                        <label asp-for="BuildingName"
+                               class="form-label">
+                        </label>
+
+                        <input asp-for="BuildingName"
+                               class="form-control"
+                               placeholder="Masukkan nama gedung" />
+
+                        <span asp-validation-for="BuildingName"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="form-section">
+
+                <div class="form-section-title">
+                    Lokasi
+                </div>
+
+                <div class="mb-3">
+
+                    <label asp-for="Address"
+                           class="form-label">
+                    </label>
+
+                    <textarea asp-for="Address"
+                              class="form-control"
+                              rows="3"
+                              placeholder="Masukkan alamat lengkap lokasi pembangunan">
+                    </textarea>
+
+                    <span asp-validation-for="Address"
+                          class="text-danger">
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="form-section">
+
+                <div class="form-section-title">
+                    Detail Proposal
+                </div>
+
+                <div class="mb-3">
+
+                    <label asp-for="EstimatedCost"
+                           class="form-label">
+                    </label>
+
+                    <input asp-for="EstimatedCost"
+                           class="form-control"
+                           placeholder="Masukkan estimasi biaya" />
+
+                    <span asp-validation-for="EstimatedCost"
+                          class="text-danger">
+                    </span>
+
+                </div>
+
+                <div class="mb-3">
+
+                    <label asp-for="Description"
+                           class="form-label">
+                    </label>
+
+                    <textarea asp-for="Description"
+                              class="form-control"
+                              rows="5"
+                              placeholder="Jelaskan detail proposal pembangunan">
+                    </textarea>
+
+                    <span asp-validation-for="Description"
+                          class="text-danger">
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="form-actions">
+
+                <a asp-action="Index"
+                   class="btn btn-outline-secondary">
+                    Batal
+                </a>
+
+                <button type="submit"
+                        class="btn btn-primary">
+                    Simpan Draft
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+@section Scripts {
+
+    <partial name="_ValidationScriptsPartial" />
+
+}
