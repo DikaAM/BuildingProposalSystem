@@ -39,7 +39,9 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 builder.Services.ConfigureApplicationCookie(options =>
 {
     options.ExpireTimeSpan = TimeSpan.FromHours(24); 
-    options.SlidingExpiration = true; 
+    options.SlidingExpiration = true;
+    options.LoginPath = "/Account/Masuk";
+    options.AccessDeniedPath = "/Account/AccessDenied";
 });
 
 // Custom Halaman Access Denied 

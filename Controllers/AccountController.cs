@@ -497,7 +497,7 @@ namespace BuildingProposalSystem.Controllers
 
             _logger.LogInformation("User baru terdaftar: {Email}, Role: {Role}", user.Email, model.Role);
 
-            return RedirectToAction("Login");
+            return RedirectToAction("Users", "Admin");
         }
 
         [HttpGet]

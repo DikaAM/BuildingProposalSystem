@@ -55,31 +55,23 @@
                     </a>
 
 
-                    @if (User.IsInRole("Staff"))
+                    @if (User.IsInRole("Staff") || User.IsInRole("Admin"))
                     {
                         <div class="menu-section">
                             PROPOSAL
                         </div>
 
-                        <a asp-controller="BuildingProposal"
-                           asp-action="Create"
-                           class="sidebar-link">
-
-                            <i class="bi bi-plus-square"></i>
-                            <span>Pengajuan Baru</span>
-                        </a>
-
-                        <a asp-controller="BuildingProposal"
+                        <a asp-controller="Proposal"
                            asp-action="Index"
                            class="sidebar-link">
 
                             <i class="bi bi-file-earmark-text"></i>
-                            <span>Pengajuan Saya</span>
+                            <span>Proposal Building</span>
                         </a>
                     }
 
 
-                    @if (User.IsInRole("Manager") || User.IsInRole("Direktur"))
+                    @if (User.IsInRole("Manager") || User.IsInRole("Direktur") || User.IsInRole("Admin"))
                     {
                         <div class="menu-section">
                             APPROVAL
@@ -129,41 +121,7 @@
                 </div>
 
 
-                <div class="sidebar-bottom">
-
-                    @if (User.IsInRole("Admin"))
-                    {
-                        <a asp-controller="Account"
-                           asp-action="Register"
-                           class="sidebar-link">
-
-                            <span>Register User</span>
-
-                        </a>
-                    }
-
-                    <a asp-controller="Account"
-                       asp-action="ChangePassword"
-                       class="sidebar-link">
-                        <span>Ubah Password</span>
-
-                    </a>
-
-
-                    <form asp-controller="Account"
-                          asp-action="Logout"
-                          method="post">
-
-                        <button type="submit"
-                                class="sidebar-link sidebar-logout">
-
-                            <span>Logout</span>
-
-                        </button>
-
-                    </form>
-
-                </div>
+                
 
             </aside>
 
@@ -199,47 +157,120 @@
 
                     <div class="topbar-right">
 
-                        <div class="user-info">
+                        @{
+                            var username = User.Identity?.Name ?? "User";
+                            var initial = username.Substring(0, 1).ToUpper();
 
-                            <div class="user-avatar">
-                                @{
-                                    var username = User.Identity?.Name ?? "User";
-                                    var initial = username.Substring(0, 1).ToUpper();
-                                }
+                            var roleName = "User";
 
-                                @initial
-                            </div>
+                            if (User.IsInRole("Admin"))
+                            {
+                                roleName = "Administrator";
+                            }
+                            else if (User.IsInRole("Staff"))
+                            {
+                                roleName = "Staff";
+                            }
+                            else if (User.IsInRole("Manager"))
+                            {
+                                roleName = "Manager";
+                            }
+                            else if (User.IsInRole("Direktur"))
+                            {
+                                roleName = "Direktur";
+                            }
+                        }
 
-                            <div class="user-details">
+                        <div class="dropdown user-dropdown">
 
-                                <div class="user-name">
-                                    @username
+                            <button class="user-dropdown-toggle"
+                                    type="button"
+                                    data-bs-toggle="dropdown"
+                                    aria-expanded="false">
+
+                                <div class="user-avatar">
+                                    @initial
                                 </div>
 
-                                <div class="user-role">
+                                <div class="user-details">
 
-                                    @if (User.IsInRole("Admin"))
-                                    {
-                                        <span>Administrator</span>
-                                    }
-                                    else if (User.IsInRole("Staff"))
-                                    {
-                                        <span>Staff</span>
-                                    }
-                                    else if (User.IsInRole("Manager"))
-                                    {
-                                        <span>Manager</span>
-                                    }
-                                    else if (User.IsInRole("Direktur"))
-                                    {
-                                        <span>Direktur</span>
-                                    }
-                                    else
-                                    {
-                                        <span>User</span>
-                                    }
+                                    <div class="user-name">
+                                        @username
+                                    </div>
+
+                                    <div class="user-role">
+                                        @roleName
+                                    </div>
 
                                 </div>
+
+                                <span class="user-dropdown-arrow">
+                                    <i class="bi bi-chevron-down"></i>
+                                </span>
+
+                            </button>
+
+
+                            <div class="dropdown-menu dropdown-menu-end user-dropdown-menu">
+
+                                <div class="user-dropdown-header">
+
+                                    <div class="user-dropdown-avatar">
+                                        @initial
+                                    </div>
+
+                                    <div>
+                                        <div class="user-dropdown-name">
+                                            @username
+                                        </div>
+
+                                        <div class="user-dropdown-role">
+                                            @roleName
+                                        </div>
+                                    </div>
+
+                                </div>
+
+
+                                <div class="dropdown-divider"></div>
+
+
+                                <a asp-controller="Account"
+                                   asp-action="ChangePassword"
+                                   class="dropdown-item user-menu-item">
+
+                                    <i class="bi bi-key"></i>
+
+                                    <div>
+                                        <div class="user-menu-title">
+                                            Ubah Password
+                                        </div>
+
+                                        <div class="user-menu-description">
+                                            Ubah password akun Anda
+                                        </div>
+                                    </div>
+
+                                </a>
+
+
+                                <div class="dropdown-divider"></div>
+
+
+                                <form asp-controller="Account"
+                                      asp-action="Logout"
+                                      method="post">
+
+                                    <button type="submit"
+                                            class="dropdown-item user-menu-logout">
+
+                                        <i class="bi bi-box-arrow-right"></i>
+
+                                        <span>Logout</span>
+
+                                    </button>
+
+                                </form>
 
                             </div>
 

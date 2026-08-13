@@ -1,0 +1,125 @@
+﻿@model List<BuildingProposalSystem.Models.ViewModels.ProposalListItemViewModel>
+
+@{
+    ViewData["Title"] = "Proposal Building";
+}
+
+<div class="page-header">
+
+    <div>
+        <h1 class="page-header-title">
+            Proposal Building
+        </h1>
+
+        <p class="page-header-subtitle">
+            Kelola pengajuan proposal pembangunan gedung.
+        </p>
+    </div>
+
+    <div>
+        <a asp-action="Create"
+           class="btn btn-primary">
+            Tambah Proposal
+        </a>
+    </div>
+
+</div>
+
+
+<div class="content-card">
+
+    <div class="content-card-header">
+
+        <div>
+            <h2>Daftar Proposal</h2>
+
+            <p>
+                Daftar seluruh proposal pembangunan gedung yang terdaftar pada sistem.
+            </p>
+        </div>
+
+        <div class="user-count">
+            @Model.Count Proposal
+        </div>
+
+    </div>
+
+
+    <div class="table-responsive">
+
+        <table class="table">
+
+            <thead>
+                <tr>
+                    <th>No. Proposal</th>
+                    <th>Tanggal</th>
+                    <th>Nama Gedung</th>
+                    <th>Estimasi Biaya</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                @if (Model.Any())
+                {
+                    @foreach (var proposal in Model)
+                    {
+                        <tr>
+
+                            <td>
+                                @proposal.ProposalNumber
+                            </td>
+
+                            <td>
+                                @proposal.ProposalDate.ToString("dd/MM/yyyy")
+                            </td>
+
+                            <td>
+                                @proposal.BuildingName
+                            </td>
+
+                            <td>
+                                Rp @proposal.EstimatedCost.ToString("N0")
+                            </td>
+
+                            <td>
+                                @proposal.Status
+                            </td>
+
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="5">
+
+                            <div class="empty-state">
+
+                                <div class="empty-state-title">
+                                    Belum Ada Proposal
+                                </div>
+
+                                <p>
+                                    Belum ada proposal pembangunan gedung yang terdaftar.
+                                </p>
+
+                                <a asp-action="Create"
+                                   class="btn btn-primary">
+                                    Tambah Proposal
+                                </a>
+
+                            </div>
+
+                        </td>
+                    </tr>
+                }
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>

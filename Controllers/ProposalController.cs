@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BuildingProposalSystem.Controllers
 {
-    [Authorize(Roles = "Staff")] 
+    //[Authorize(Roles = "Staff,Admin")]
     public class ProposalController : Controller
     {
         private readonly IProposalService _proposalService;
@@ -18,6 +18,14 @@ namespace BuildingProposalSystem.Controllers
         {
             _proposalService = proposalService;
             _userManager = userManager;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Index()
+        {
+            var proposals = await _proposalService.GetAllProposalsAsync();
+
+            return View(proposals);
         }
 
         [HttpGet]
@@ -41,11 +49,15 @@ namespace BuildingProposalSystem.Controllers
                 return RedirectToAction("Login", "Account");
             }
 
-            var proposalId = await _proposalService.CreateDraftAsync(model, userId);
+            var proposal = await _proposalService.CreateDraftAsync(model, userId);
+           
+            if (proposal == Guid.Empty)
+            {
+                ModelState.AddModelError(string.Empty, "Gagal membuat draft proposal.");
+                return View(model);
+            }
 
-            TempData["SuccessMessage"] = "Draft proposal berhasil disimpan.";
-            //return RedirectToAction("Create"); 
-            return RedirectToAction("Edit", new { id = proposalId }); 
+            return RedirectToAction("Index", "Proposal");
         }
     }
 }
