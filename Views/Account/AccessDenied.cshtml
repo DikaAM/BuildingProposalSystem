@@ -1,0 +1,30 @@
+﻿@{
+    ViewData["Title"] = "Akses Ditolak";
+}
+
+<div class="auth-page">
+
+    <div class="reset-success-card">
+
+        <div class="reset-success-status">
+            <i class="bi bi-shield-x"></i>
+            Akses Ditolak
+        </div>
+
+        <div class="reset-success-header">
+            <h1>Anda Tidak Memiliki Akses</h1>
+
+            <p>
+                Role atau akun Anda tidak memiliki izin untuk mengakses halaman ini.
+            </p>
+        </div>
+
+        <a asp-controller="Home"
+           asp-action="Index"
+           class="btn btn-primary reset-success-button">
+            Kembali ke Beranda
+        </a>
+
+    </div>
+
+</div>

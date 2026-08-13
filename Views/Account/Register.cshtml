@@ -1,0 +1,248 @@
+﻿@model BuildingProposalSystem.Models.ViewModels.RegisterViewModel
+
+@{
+    ViewData["Title"] = "Register";
+}
+
+<div class="register-page">
+
+    <div class="register-card">
+
+        <div class="register-header">
+                         
+            <h1>Register</h1>
+
+            <p>
+                Buat akun baru untuk mengakses Building Proposal System.
+            </p>
+
+        </div>
+
+
+        <form asp-action="Register" method="post">
+
+            <div asp-validation-summary="ModelOnly"
+                 class="alert alert-danger"
+                 role="alert">
+            </div>
+
+
+            <div class="register-form-group">
+
+                <label asp-for="FullName">
+                    Nama Lengkap
+                </label>
+
+                <input asp-for="FullName"
+                       class="form-control"
+                       placeholder="Masukkan nama lengkap"
+                       autocomplete="name" />
+
+                <span asp-validation-for="FullName"
+                      class="text-danger">
+                </span>
+
+            </div>
+
+
+            <div class="register-form-group">
+
+                <label asp-for="Email">
+                    Email
+                </label>
+
+                <input asp-for="Email"
+                       class="form-control"
+                       placeholder="Masukkan email"
+                       autocomplete="email" />
+
+                <span asp-validation-for="Email"
+                      class="text-danger">
+                </span>
+
+            </div>
+
+
+            <div class="register-form-group">
+
+                <label asp-for="Username">
+                    Username
+                </label>
+
+                <input asp-for="Username"
+                       class="form-control"
+                       placeholder="Masukkan username"
+                       autocomplete="username" />
+
+                <span asp-validation-for="Username"
+                      class="text-danger">
+                </span>
+
+            </div>
+
+
+            <div class="register-form-group">
+
+                <label asp-for="Password">
+                    Password
+                </label>
+
+                <div class="register-password-wrapper">
+
+                    <input asp-for="Password"
+                           class="form-control register-password-input"
+                           placeholder="Masukkan password"
+                           autocomplete="new-password" />
+
+                    <button type="button"
+                            class="register-password-toggle"
+                            data-target="Password">
+
+                        <span>Show</span>
+
+                    </button>
+
+                </div>
+
+                <span asp-validation-for="Password"
+                      class="text-danger">
+                </span>
+
+            </div>
+
+
+            <div class="register-form-group">
+
+                <label asp-for="ConfirmPassword">
+                    Konfirmasi Password
+                </label>
+
+                <div class="register-password-wrapper">
+
+                    <input asp-for="ConfirmPassword"
+                           class="form-control register-password-input"
+                           placeholder="Ulangi password"
+                           autocomplete="new-password" />
+
+                    <button type="button"
+                            class="register-password-toggle"
+                            data-target="ConfirmPassword">
+
+                        <span>Show</span>
+
+                    </button>
+
+                </div>
+
+                <span asp-validation-for="ConfirmPassword"
+                      class="text-danger">
+                </span>
+
+            </div>
+
+
+            <div class="register-form-group">
+
+                <label asp-for="Role">
+                    Role
+                </label>
+
+                <select asp-for="Role"
+                        asp-items="ViewBag.Roles"
+                        class="form-select">
+
+                    <option value="">
+                        -- Pilih Role --
+                    </option>
+
+                </select>
+
+                <span asp-validation-for="Role"
+                      class="text-danger">
+                </span>
+
+            </div>
+
+
+            <button type="submit"
+                    class="btn btn-primary register-button">
+
+                Register
+
+            </button>
+
+
+            <div class="register-login">
+
+                Sudah punya akun?
+
+                <a asp-controller="Account"
+                   asp-action="Login">
+
+                    Login
+
+                </a>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+@section Scripts {
+
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+
+        document.addEventListener("DOMContentLoaded", function () {
+
+            const toggleButtons =
+                document.querySelectorAll(".register-password-toggle");
+
+
+            toggleButtons.forEach(function (button) {
+
+                button.addEventListener("click", function () {
+
+                    const targetId =
+                        button.getAttribute("data-target");
+
+                    const input =
+                        document.getElementById(targetId);
+
+                    const text =
+                        button.querySelector("span");
+
+
+                    if (!input) {
+                        return;
+                    }
+
+
+                    if (input.type === "password") {
+
+                        input.type = "text";
+
+                        text.textContent = "Hide";
+
+                    }
+                    else {
+
+                        input.type = "password";
+
+                        text.textContent = "Show";
+
+                    }
+
+                });
+
+            });
+
+        });
+
+    </script>
+}

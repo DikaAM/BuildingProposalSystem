@@ -4,23 +4,105 @@
     ViewData["Title"] = "Verifikasi 2FA";
 }
 
-<h2>Verifikasi Kode 2FA</h2>
-<p>Masukkan kode 6-digit dari aplikasi Google Authenticator kamu.</p>
+<div class="two-factor-verify-page">
 
-<form asp-action="VerifyTwoFactor" method="post">
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="two-factor-verify-card">
 
-    <div class="mb-3">
-        <label asp-for="Code" class="form-label"></label>
-        <input asp-for="Code" class="form-control" autocomplete="off" />
-        <span asp-validation-for="Code" class="text-danger"></span>
+        <div class="two-factor-verify-header">
+
+            <div class="two-factor-verify-status">
+                Two-Factor Authentication
+            </div>
+
+            <h1>Verifikasi Kode 2FA</h1>
+
+            <p>
+                Masukkan kode 6 digit yang muncul di aplikasi
+                Google Authenticator Anda.
+            </p>
+
+        </div>
+
+
+        <form asp-action="VerifyTwoFactor" method="post">
+
+            <div asp-validation-summary="ModelOnly"
+                 class="alert alert-danger"
+                 role="alert">
+            </div>
+
+
+            <div class="two-factor-verify-code-group">
+
+                <label asp-for="Code">
+                    Kode Verifikasi
+                </label>
+
+                <input asp-for="Code"
+                       class="form-control two-factor-verify-code-input"
+                       autocomplete="one-time-code"
+                       inputmode="numeric"
+                       maxlength="6"
+                       placeholder="000000"
+                       autofocus />
+
+                <span asp-validation-for="Code"
+                      class="text-danger">
+                </span>
+
+            </div>
+
+
+            <input type="hidden"
+                   asp-for="RememberMe" />
+
+
+            <button type="submit"
+                    class="btn btn-primary two-factor-verify-button">
+
+                Verifikasi
+
+            </button>
+
+        </form>
+
+
+        <div class="two-factor-verify-info">
+
+            Kode berubah secara berkala.
+            Gunakan kode terbaru yang tampil di Google Authenticator.
+
+        </div>
+
     </div>
 
-    <input type="hidden" asp-for="RememberMe" />
+</div>
 
-    <button type="submit" class="btn btn-primary">Verifikasi</button>
-</form>
 
 @section Scripts {
+
     <partial name="_ValidationScriptsPartial" />
+
+    <script>
+
+        document.addEventListener("DOMContentLoaded", function () {
+
+            const codeInput =
+                document.querySelector(".two-factor-verify-code-input");
+
+
+            if (codeInput) {
+
+                codeInput.addEventListener("input", function () {
+
+                    this.value =
+                        this.value.replace(/\D/g, "").slice(0, 6);
+
+                });
+
+            }
+
+        });
+
+    </script>
 }

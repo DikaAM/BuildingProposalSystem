@@ -5,37 +5,193 @@
     ViewData["Title"] = "Login";
 }
 
-<h2>Login</h2>
+<div class="login-page">
 
-<form asp-action="Login" method="post">
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="login-card">
 
-    <div class="mb-3">
-        <label asp-for="UsernameOrEmail" class="form-label"></label>
-        <input asp-for="UsernameOrEmail" class="form-control" />
-        <span asp-validation-for="UsernameOrEmail" class="text-danger"></span>
+        <div class="login-header">
+
+            <div class="login-logo">
+                <i class="bi bi-building"></i>
+            </div>
+
+            <h1>Welcome</h1>
+
+            <p>
+                Sign in to Building Proposal System
+            </p>
+
+        </div>
+
+
+        <form asp-action="Login" method="post">
+
+            <div asp-validation-summary="ModelOnly"
+                 class="alert alert-danger"
+                 role="alert">
+            </div>
+
+
+            <div class="login-form-group">
+
+                <label asp-for="UsernameOrEmail">
+                    Username atau Email
+                </label>
+
+                <div class="input-icon-wrapper">
+
+                    <i class="bi bi-person"></i>
+
+                    <input asp-for="UsernameOrEmail"
+                           class="form-control"
+                           placeholder="Masukkan username atau email"
+                           autocomplete="username" />
+
+                </div>
+
+                <span asp-validation-for="UsernameOrEmail"
+                      class="text-danger">
+                </span>
+
+            </div>
+
+
+            <div class="login-form-group">
+
+                <div class="password-label">
+
+                    <label asp-for="Password">
+                        Password
+                    </label>
+
+                    <a asp-action="ForgotPassword">
+                        Lupa Password?
+                    </a>
+
+                </div>
+
+
+                <div class="input-icon-wrapper">
+
+                    <i class="bi bi-lock"></i>
+
+                    <input asp-for="Password"
+                           class="form-control"
+                           placeholder="Masukkan password"
+                           autocomplete="current-password"
+                           id="passwordInput" />
+
+                    <button type="button"
+                            class="password-toggle"
+                            id="togglePassword">
+
+                        <i class="bi bi-eye"></i>
+
+                    </button>
+
+                </div>
+
+                <span asp-validation-for="Password"
+                      class="text-danger">
+                </span>
+
+            </div>
+
+
+            <div class="remember-me">
+
+                <input asp-for="RememberMe"
+                       class="form-check-input" />
+
+                <label asp-for="RememberMe">
+                    Ingat saya
+                </label>
+
+            </div>
+
+
+            <div class="recaptcha-container">
+
+                <div class="g-recaptcha"
+                     data-sitekey="@RecaptchaOptions.Value.SiteKey">
+                </div>
+
+            </div>
+
+
+            <button type="submit"
+                    class="btn btn-primary login-button">
+
+                Login
+
+            </button>
+
+            
+        </form>
+
+
+        <div class="login-security">
+
+            <span>
+                Secure authentication with reCAPTCHA and 2FA
+            </span>
+
+        </div>
+
     </div>
 
-    <div class="mb-3">
-        <label asp-for="Password" class="form-label"></label>
-        <input asp-for="Password" class="form-control" />
-        <span asp-validation-for="Password" class="text-danger"></span>
-    </div>
+</div>
 
-    <div class="mb-3 form-check">
-        <input asp-for="RememberMe" class="form-check-input" />
-        <label asp-for="RememberMe" class="form-check-label"></label>
-    </div>
-
-    <div class="mb-3">
-        <div class="g-recaptcha" data-sitekey="@RecaptchaOptions.Value.SiteKey"></div>
-    </div>
-
-    <button type="submit" class="btn btn-primary">Login</button>
-    <a asp-action="ForgotPassword" class="d-block mt-2">Lupa Password?</a>
-</form>
 
 @section Scripts {
+
     <partial name="_ValidationScriptsPartial" />
-    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
+    <script src="https://www.google.com/recaptcha/api.js"
+            async
+            defer>
+    </script>
+
+
+    <script>
+
+        document.addEventListener("DOMContentLoaded", function () {
+
+            const passwordInput =
+                document.getElementById("passwordInput");
+
+            const togglePassword =
+                document.getElementById("togglePassword");
+
+            if (passwordInput && togglePassword) {
+
+                togglePassword.addEventListener("click", function () {
+
+                    const icon =
+                        togglePassword.querySelector("i");
+
+                    if (passwordInput.type === "password") {
+
+                        passwordInput.type = "text";
+
+                        icon.classList.remove("bi-eye");
+                        icon.classList.add("bi-eye-slash");
+
+                    }
+                    else {
+
+                        passwordInput.type = "password";
+
+                        icon.classList.remove("bi-eye-slash");
+                        icon.classList.add("bi-eye");
+
+                    }
+
+                });
+
+            }
+
+        });
+
+    </script>
 }

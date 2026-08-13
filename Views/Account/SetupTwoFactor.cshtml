@@ -4,37 +4,170 @@
     ViewData["Title"] = "Setup 2FA";
 }
 
-<h2>Setup Google Authenticator</h2>
-<p>Scan QR Code ini pakai aplikasi Google Authenticator, lalu masukkan kode 6-digit yang muncul.</p>
+<div class="two-factor-page">
 
-<div id="qrcode"></div>
+    <div class="two-factor-card">
 
-<p>Atau masukkan manual: <code>@Model.SharedKey</code></p>
+        <div class="two-factor-header">
 
-<form asp-action="SetupTwoFactor" method="post">
-    <input type="hidden" asp-for="Token" />
-    <input type="hidden" asp-for="SharedKey" />
-    <input type="hidden" asp-for="AuthenticatorUri" />
+            <div class="two-factor-status">
+                Two-Factor Authentication
+            </div>
 
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <h1>Setup Google Authenticator</h1>
 
-    <div class="mb-3">
-        <label asp-for="Code" class="form-label"></label>
-        <input asp-for="Code" class="form-control" autocomplete="off" />
-        <span asp-validation-for="Code" class="text-danger"></span>
+            <p>
+                Hubungkan akun Anda dengan Google Authenticator
+                untuk meningkatkan keamanan akun.
+            </p>
+
+        </div>
+
+
+        <div class="two-factor-content">
+
+            <div class="two-factor-step">
+
+                <div class="two-factor-step-title">
+                    1. Scan QR Code
+                </div>
+
+                <p>
+                    Buka aplikasi Google Authenticator di perangkat Anda,
+                    lalu scan QR Code berikut.
+                </p>
+
+                <div class="qrcode-wrapper">
+                    <div id="qrcode"></div>
+                </div>
+
+            </div>
+
+
+            <div class="two-factor-divider">
+                ATAU
+            </div>
+
+
+            <div class="two-factor-manual">
+
+                <div class="two-factor-step-title">
+                    Masukkan kode secara manual
+                </div>
+
+                <p>
+                    Jika tidak dapat melakukan scan, masukkan kode berikut
+                    secara manual ke Google Authenticator.
+                </p>
+
+                <div class="shared-key">
+                    @Model.SharedKey
+                </div>
+
+            </div>
+
+
+            <div class="two-factor-step verification-step">
+
+                <div class="two-factor-step-title">
+                    2. Masukkan kode verifikasi
+                </div>
+
+                <p>
+                    Masukkan kode 6 digit yang muncul di Google Authenticator.
+                </p>
+
+            </div>
+
+
+            <form asp-action="SetupTwoFactor" method="post">
+
+                <input type="hidden" asp-for="Token" />
+                <input type="hidden" asp-for="SharedKey" />
+                <input type="hidden" asp-for="AuthenticatorUri" />
+
+
+                <div asp-validation-summary="ModelOnly"
+                     class="alert alert-danger"
+                     role="alert">
+                </div>
+
+
+                <div class="two-factor-code-group">
+
+                    <label asp-for="Code">
+                        Kode Verifikasi
+                    </label>
+
+                    <input asp-for="Code"
+                           class="form-control two-factor-code-input"
+                           autocomplete="one-time-code"
+                           inputmode="numeric"
+                           maxlength="6"
+                           placeholder="000000" />
+
+                    <span asp-validation-for="Code"
+                          class="text-danger">
+                    </span>
+
+                </div>
+
+
+                <button type="submit"
+                        class="btn btn-primary two-factor-button">
+
+                    Verifikasi & Aktifkan
+
+                </button>
+
+            </form>
+
+        </div>
+
     </div>
 
-    <button type="submit" class="btn btn-primary">Verifikasi & Aktifkan</button>
-</form>
+</div>
+
 
 @section Scripts {
+
     <partial name="_ValidationScriptsPartial" />
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
     <script>
-        new QRCode(document.getElementById("qrcode"), {
-        text: "@Html.Raw(Model.AuthenticatorUri)",
+
+        document.addEventListener("DOMContentLoaded", function () {
+
+        const qrContainer =
+        document.getElementById("qrcode");
+
+        if (qrContainer) {
+
+        new QRCode(qrContainer, {
+        text: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.AuthenticatorUri)),
         width: 200,
         height: 200
         });
+
+        }
+
+
+        const codeInput =
+        document.querySelector(".two-factor-code-input");
+
+        if (codeInput) {
+
+        codeInput.addEventListener("input", function () {
+
+        this.value =
+        this.value.replace(/\D/g, "").slice(0, 6);
+
+        });
+
+        }
+
+        });
+
     </script>
 }

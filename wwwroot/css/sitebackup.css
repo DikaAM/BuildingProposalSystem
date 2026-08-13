@@ -1,0 +1,2204 @@
+html {
+    font-size: 14px;
+}
+
+body {
+    margin: 0;
+    font-family: "Segoe UI", Arial, sans-serif;
+    background-color: #f5f7fb;
+    color: #212529;
+}
+
+
+/* =========================================
+   APP WRAPPER
+========================================= */
+
+.app-wrapper {
+    min-height: 100vh;
+    display: flex;
+}
+
+
+/* =========================================
+   SIDEBAR
+========================================= */
+
+.sidebar {
+    width: 260px;
+    min-height: 100vh;
+    background: #172033;
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.25s ease;
+}
+
+
+/* BRAND */
+
+.sidebar-brand {
+    height: 75px;
+    display: flex;
+    align-items: center;
+    padding: 0 22px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.brand-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: #0d6efd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 12px;
+    font-size: 20px;
+}
+
+.brand-title {
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.brand-subtitle {
+    font-size: 11px;
+    color: #9ca8bb;
+}
+
+
+/* MENU */
+
+.sidebar-menu {
+    padding: 20px 12px;
+    flex: 1;
+}
+
+.menu-section {
+    font-size: 10px;
+    font-weight: 600;
+    color: #71809a;
+    padding: 15px 12px 8px;
+    letter-spacing: 0.8px;
+}
+
+
+.sidebar-link {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 11px 12px;
+    margin-bottom: 3px;
+    border-radius: 8px;
+    color: #b9c3d4;
+    text-decoration: none;
+    font-size: 14px;
+    transition: all 0.2s ease;
+}
+
+
+    .sidebar-link i {
+        font-size: 17px;
+        width: 20px;
+        text-align: center;
+    }
+
+
+    .sidebar-link:hover {
+        background: rgba(255,255,255,0.07);
+        color: #ffffff;
+    }
+
+
+    .sidebar-link.active {
+        background: #0d6efd;
+        color: #ffffff;
+    }
+
+
+/* SIDEBAR BOTTOM */
+
+.sidebar-bottom {
+    padding: 12px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+}
+
+
+.sidebar-logout {
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    text-align: left;
+}
+
+
+/* =========================================
+   MAIN WRAPPER
+========================================= */
+
+.main-wrapper {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+
+/* =========================================
+   TOPBAR
+========================================= */
+
+.topbar {
+    height: 75px;
+    background: #ffffff;
+    border-bottom: 1px solid #e5e7eb;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 28px;
+}
+
+
+.topbar-left {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+
+.sidebar-toggle {
+    width: 38px;
+    height: 38px;
+    border: none;
+    background: #f4f6f9;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    color: #4b5563;
+    cursor: pointer;
+}
+
+
+    .sidebar-toggle:hover {
+        background: #e9edf3;
+    }
+
+
+.page-title {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+
+.page-subtitle {
+    font-size: 12px;
+    color: #8a94a6;
+}
+
+
+/* USER */
+
+.topbar-right {
+    display: flex;
+    align-items: center;
+}
+
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+
+.user-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #0d6efd;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+}
+
+
+.user-name {
+    font-size: 13px;
+    font-weight: 600;
+}
+
+
+.user-role {
+    font-size: 11px;
+    color: #8a94a6;
+}
+
+
+/* =========================================
+   CONTENT
+========================================= */
+
+.content-area {
+    flex: 1;
+    padding: 28px;
+}
+
+
+/* =========================================
+   FOOTER
+========================================= */
+
+.app-footer {
+    padding: 15px 28px;
+    background: #ffffff;
+    border-top: 1px solid #e5e7eb;
+    display: flex;
+    justify-content: space-between;
+    color: #8a94a6;
+    font-size: 12px;
+}
+
+
+/* =========================================
+   SIDEBAR COLLAPSE
+========================================= */
+
+.sidebar.sidebar-collapsed {
+    width: 75px;
+}
+
+
+    .sidebar.sidebar-collapsed .brand-title,
+    .sidebar.sidebar-collapsed .brand-subtitle,
+    .sidebar.sidebar-collapsed .sidebar-link span,
+    .sidebar.sidebar-collapsed .menu-section {
+        display: none;
+    }
+
+
+    .sidebar.sidebar-collapsed .sidebar-brand {
+        justify-content: center;
+        padding: 0;
+    }
+
+
+    .sidebar.sidebar-collapsed .brand-icon {
+        margin-right: 0;
+    }
+
+
+    .sidebar.sidebar-collapsed .sidebar-link {
+        justify-content: center;
+    }
+
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 768px) {
+
+    .sidebar {
+        position: fixed;
+        left: -260px;
+        top: 0;
+        z-index: 1050;
+        height: 100vh;
+    }
+
+
+        .sidebar.sidebar-collapsed {
+            left: 0;
+            width: 260px;
+        }
+
+
+            .sidebar.sidebar-collapsed .brand-title,
+            .sidebar.sidebar-collapsed .brand-subtitle,
+            .sidebar.sidebar-collapsed .sidebar-link span,
+            .sidebar.sidebar-collapsed .menu-section {
+                display: block;
+            }
+
+
+            .sidebar.sidebar-collapsed .sidebar-brand {
+                justify-content: flex-start;
+                padding: 0 22px;
+            }
+
+
+            .sidebar.sidebar-collapsed .brand-icon {
+                margin-right: 12px;
+            }
+
+
+            .sidebar.sidebar-collapsed .sidebar-link {
+                justify-content: flex-start;
+            }
+
+
+    .content-area {
+        padding: 20px;
+    }
+
+
+    .topbar {
+        padding: 0 18px;
+    }
+
+
+    .user-details {
+        display: none;
+    }
+
+
+    .app-footer {
+        flex-direction: column;
+        gap: 5px;
+    }
+}
+/* =========================================
+   LOGIN PAGE
+========================================= */
+
+.login-page {
+    min-height: calc(100vh - 130px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+}
+
+
+.login-card {
+    width: 100%;
+    max-width: 460px;
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    padding: 38px 40px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+}
+
+
+/* =========================================
+   LOGIN HEADER
+========================================= */
+
+.login-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+
+.login-logo {
+    width: 58px;
+    height: 58px;
+    margin: 0 auto 16px;
+    border-radius: 14px;
+    background: #0d6efd;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+}
+
+
+.login-header h1 {
+    margin: 0;
+    font-size: 25px;
+    font-weight: 600;
+    color: #172033;
+}
+
+
+.login-header p {
+    margin: 7px 0 0;
+    font-size: 13px;
+    color: #8a94a6;
+}
+
+
+/* =========================================
+   FORM
+========================================= */
+
+.login-form-group {
+    margin-bottom: 20px;
+}
+
+
+    .login-form-group > label,
+    .password-label label {
+        display: block;
+        margin-bottom: 8px;
+        font-size: 13px;
+        font-weight: 600;
+        color: #374151;
+    }
+
+
+.input-icon-wrapper {
+    position: relative;
+}
+
+
+    .input-icon-wrapper > i {
+        position: absolute;
+        left: 14px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #9ca3af;
+        font-size: 16px;
+        z-index: 2;
+    }
+
+
+    .input-icon-wrapper .form-control {
+        height: 46px;
+        padding-left: 42px;
+        padding-right: 42px;
+        border: 1px solid #d9dee7;
+        border-radius: 8px;
+        font-size: 14px;
+        box-shadow: none;
+    }
+
+
+        .input-icon-wrapper .form-control:focus {
+            border-color: #0d6efd;
+            box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.10);
+        }
+
+
+        .input-icon-wrapper .form-control::placeholder {
+            color: #a5adba;
+        }
+
+
+/* =========================================
+   PASSWORD
+========================================= */
+
+.password-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+
+    .password-label label {
+        margin-bottom: 0;
+    }
+
+
+    .password-label a {
+        font-size: 12px;
+        color: #0d6efd;
+        text-decoration: none;
+    }
+
+
+        .password-label a:hover {
+            text-decoration: underline;
+        }
+
+
+.password-toggle {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    border: none;
+    background: transparent;
+    color: #8a94a6;
+    cursor: pointer;
+    padding: 5px;
+    z-index: 2;
+}
+
+
+    .password-toggle:hover {
+        color: #0d6efd;
+    }
+
+
+/* =========================================
+   REMEMBER ME
+========================================= */
+
+.remember-me {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 22px;
+    font-size: 13px;
+    color: #4b5563;
+}
+
+
+    .remember-me .form-check-input {
+        margin: 0;
+        cursor: pointer;
+    }
+
+
+    .remember-me label {
+        cursor: pointer;
+    }
+
+
+/* =========================================
+   RECAPTCHA
+========================================= */
+
+.recaptcha-container {
+    margin-bottom: 22px;
+    overflow: hidden;
+}
+
+
+    .recaptcha-container .g-recaptcha {
+        transform-origin: left top;
+    }
+
+
+/* =========================================
+   LOGIN BUTTON
+========================================= */
+
+.login-button {
+    width: 100%;
+    height: 46px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+
+    .login-button i {
+        font-size: 16px;
+    }
+
+
+/* =========================================
+   VALIDATION
+========================================= */
+
+.login-card .alert {
+    font-size: 13px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+
+.login-card .text-danger {
+    display: block;
+    margin-top: 5px;
+    font-size: 12px;
+}
+
+
+/* =========================================
+   SECURITY INFO
+========================================= */
+
+.login-security {
+    margin-top: 25px;
+    padding-top: 20px;
+    border-top: 1px solid #eef0f4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 7px;
+    color: #8a94a6;
+    font-size: 11px;
+    text-align: center;
+}
+
+
+    .login-security i {
+        color: #198754;
+        font-size: 15px;
+    }
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 576px) {
+
+    .login-page {
+        padding: 25px 15px;
+    }
+
+
+    .login-card {
+        padding: 30px 24px;
+        border-radius: 12px;
+    }
+
+
+    .login-header h1 {
+        font-size: 22px;
+    }
+
+
+    .recaptcha-container {
+        transform: scale(0.90);
+        transform-origin: left top;
+        height: 70px;
+    }
+}
+
+/* =========================================
+   CHANGE PASSWORD
+========================================= */
+
+.change-password-page {
+    min-height: calc(100vh - 130px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+}
+
+
+.change-password-card {
+    width: 100%;
+    max-width: 500px;
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    padding: 38px 40px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+}
+
+
+/* =========================================
+   HEADER
+========================================= */
+
+.change-password-header {
+    text-align: center;
+    margin-bottom: 28px;
+}
+
+
+.change-password-icon {
+    width: 58px;
+    height: 58px;
+    margin: 0 auto 16px;
+    border-radius: 14px;
+    background: #0d6efd;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 27px;
+}
+
+
+.change-password-header h1 {
+    margin: 0;
+    font-size: 25px;
+    font-weight: 600;
+    color: #172033;
+}
+
+
+.change-password-header p {
+    margin: 7px 0 0;
+    font-size: 13px;
+    color: #8a94a6;
+}
+
+
+/* =========================================
+   FORM
+========================================= */
+
+.change-password-form-group {
+    margin-bottom: 20px;
+}
+
+
+    .change-password-form-group > label {
+        display: block;
+        margin-bottom: 8px;
+        font-size: 13px;
+        font-weight: 600;
+        color: #374151;
+    }
+
+
+/* =========================================
+   PASSWORD INPUT
+========================================= */
+
+.password-input-wrapper {
+    position: relative;
+}
+
+
+    .password-input-wrapper > i {
+        position: absolute;
+        left: 14px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #9ca3af;
+        font-size: 16px;
+        z-index: 2;
+    }
+
+
+.password-input {
+    height: 46px;
+    padding-left: 42px;
+    padding-right: 45px;
+    border: 1px solid #d9dee7;
+    border-radius: 8px;
+    font-size: 14px;
+    box-shadow: none;
+}
+
+
+    .password-input:focus {
+        border-color: #0d6efd;
+        box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.10);
+    }
+
+
+    .password-input::placeholder {
+        color: #a5adba;
+    }
+
+
+.password-toggle {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    border: none;
+    background: transparent;
+    color: #8a94a6;
+    cursor: pointer;
+    padding: 5px;
+    z-index: 2;
+}
+
+
+    .password-toggle:hover {
+        color: #0d6efd;
+    }
+
+
+/* =========================================
+   ALERT
+========================================= */
+
+.change-password-alert {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+
+    .change-password-alert i {
+        font-size: 16px;
+    }
+
+
+/* =========================================
+   PASSWORD REQUIREMENT
+========================================= */
+
+.password-requirement {
+    background: #f5f8ff;
+    border: 1px solid #dce7ff;
+    border-radius: 8px;
+    padding: 13px 15px;
+    margin-bottom: 22px;
+    font-size: 12px;
+    color: #5f6b7a;
+}
+
+
+.requirement-title {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    margin-bottom: 7px;
+    color: #495057;
+    font-weight: 600;
+}
+
+
+    .requirement-title i {
+        color: #0d6efd;
+        font-size: 14px;
+    }
+
+
+.password-requirement ul {
+    margin: 0;
+    padding-left: 20px;
+}
+
+
+.password-requirement li {
+    margin-bottom: 3px;
+}
+
+
+    .password-requirement li:last-child {
+        margin-bottom: 0;
+    }
+
+
+/* =========================================
+   BUTTON
+========================================= */
+
+.change-password-button {
+    width: 100%;
+    height: 46px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+
+    .change-password-button i {
+        font-size: 16px;
+    }
+
+
+/* =========================================
+   VALIDATION
+========================================= */
+
+.change-password-card .alert-danger {
+    font-size: 13px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+
+.change-password-card .text-danger {
+    display: block;
+    margin-top: 5px;
+    font-size: 12px;
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 576px) {
+
+    .change-password-page {
+        padding: 25px 15px;
+    }
+
+
+    .change-password-card {
+        padding: 30px 24px;
+        border-radius: 12px;
+    }
+
+
+    .change-password-header h1 {
+        font-size: 22px;
+    }
+}
+
+/* =========================================
+   FORGOT PASSWORD
+========================================= */
+
+.forgot-password-page {
+    min-height: calc(100vh - 130px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+}
+
+
+.forgot-password-card {
+    width: 100%;
+    max-width: 460px;
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    padding: 38px 40px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+}
+
+
+/* =========================================
+   HEADER
+========================================= */
+
+.forgot-password-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+
+.forgot-password-logo {
+    width: 58px;
+    height: 58px;
+    margin: 0 auto 16px;
+    border-radius: 14px;
+    background: #0d6efd;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+
+.forgot-password-header h1 {
+    margin: 0;
+    font-size: 25px;
+    font-weight: 600;
+    color: #172033;
+}
+
+
+.forgot-password-header p {
+    margin: 8px 0 0;
+    font-size: 13px;
+    line-height: 1.6;
+    color: #8a94a6;
+}
+
+
+/* =========================================
+   FORM
+========================================= */
+
+.forgot-password-form-group {
+    margin-bottom: 22px;
+}
+
+
+    .forgot-password-form-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-size: 13px;
+        font-weight: 600;
+        color: #374151;
+    }
+
+
+    .forgot-password-form-group .form-control {
+        height: 46px;
+        border: 1px solid #d9dee7;
+        border-radius: 8px;
+        padding: 0 14px;
+        font-size: 14px;
+        box-shadow: none;
+    }
+
+
+        .forgot-password-form-group .form-control:focus {
+            border-color: #0d6efd;
+            box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.10);
+        }
+
+
+        .forgot-password-form-group .form-control::placeholder {
+            color: #a5adba;
+        }
+
+
+/* =========================================
+   BUTTON
+========================================= */
+
+.forgot-password-button {
+    width: 100%;
+    height: 46px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+
+/* =========================================
+   VALIDATION
+========================================= */
+
+.forgot-password-card .alert-danger {
+    font-size: 13px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+
+.forgot-password-card .text-danger {
+    display: block;
+    margin-top: 5px;
+    font-size: 12px;
+}
+
+
+/* =========================================
+   SUCCESS MESSAGE
+========================================= */
+
+.forgot-password-success {
+    padding: 16px;
+    margin-bottom: 20px;
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    border-radius: 8px;
+    color: #166534;
+}
+
+
+.success-title {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+
+.success-message {
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+
+/* =========================================
+   BACK TO LOGIN
+========================================= */
+
+.forgot-password-back {
+    text-align: center;
+    margin-top: 20px;
+}
+
+
+    .forgot-password-back a {
+        font-size: 13px;
+        color: #0d6efd;
+        text-decoration: none;
+    }
+
+
+        .forgot-password-back a:hover {
+            text-decoration: underline;
+        }
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 576px) {
+
+    .forgot-password-page {
+        padding: 25px 15px;
+    }
+
+
+    .forgot-password-card {
+        padding: 30px 24px;
+        border-radius: 12px;
+    }
+
+
+    .forgot-password-header h1 {
+        font-size: 22px;
+    }
+}
+
+
+/* =========================================
+   RESET PASSWORD
+========================================= */
+
+.reset-password-page {
+    min-height: calc(100vh - 130px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+}
+
+
+.reset-password-card {
+    width: 100%;
+    max-width: 500px;
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    padding: 38px 40px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+}
+
+
+/* =========================================
+   HEADER
+========================================= */
+
+.reset-password-header {
+    text-align: center;
+    margin-bottom: 28px;
+}
+
+
+.reset-password-logo {
+    width: 58px;
+    height: 58px;
+    margin: 0 auto 16px;
+    border-radius: 14px;
+    background: #0d6efd;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+
+.reset-password-header h1 {
+    margin: 0;
+    font-size: 25px;
+    font-weight: 600;
+    color: #172033;
+}
+
+
+.reset-password-header p {
+    margin: 7px 0 0;
+    font-size: 13px;
+    color: #8a94a6;
+}
+
+
+/* =========================================
+   FORM
+========================================= */
+
+.reset-password-form-group {
+    margin-bottom: 20px;
+}
+
+
+    .reset-password-form-group > label {
+        display: block;
+        margin-bottom: 8px;
+        font-size: 13px;
+        font-weight: 600;
+        color: #374151;
+    }
+
+
+/* =========================================
+   PASSWORD INPUT
+========================================= */
+
+.reset-password-input-wrapper {
+    position: relative;
+}
+
+
+.reset-password-input {
+    height: 46px;
+    padding: 0 65px 0 14px;
+    border: 1px solid #d9dee7;
+    border-radius: 8px;
+    font-size: 14px;
+    box-shadow: none;
+}
+
+
+    .reset-password-input:focus {
+        border-color: #0d6efd;
+        box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.10);
+    }
+
+
+    .reset-password-input::placeholder {
+        color: #a5adba;
+    }
+
+
+.reset-password-toggle {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    border: none;
+    background: transparent;
+    color: #0d6efd;
+    cursor: pointer;
+    padding: 5px 7px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+
+    .reset-password-toggle:hover {
+        color: #084298;
+    }
+
+
+/* =========================================
+   REQUIREMENT
+========================================= */
+
+.reset-password-requirement {
+    background: #f5f8ff;
+    border: 1px solid #dce7ff;
+    border-radius: 8px;
+    padding: 13px 15px;
+    margin-bottom: 22px;
+    font-size: 12px;
+    color: #5f6b7a;
+}
+
+
+.requirement-title {
+    margin-bottom: 7px;
+    color: #495057;
+    font-weight: 600;
+}
+
+
+.reset-password-requirement ul {
+    margin: 0;
+    padding-left: 20px;
+}
+
+
+.reset-password-requirement li {
+    margin-bottom: 3px;
+}
+
+
+    .reset-password-requirement li:last-child {
+        margin-bottom: 0;
+    }
+
+
+/* =========================================
+   BUTTON
+========================================= */
+
+.reset-password-button {
+    width: 100%;
+    height: 46px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+
+/* =========================================
+   VALIDATION
+========================================= */
+
+.reset-password-card .alert-danger {
+    font-size: 13px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+
+.reset-password-card .text-danger {
+    display: block;
+    margin-top: 5px;
+    font-size: 12px;
+}
+
+
+/* =========================================
+   BACK TO LOGIN
+========================================= */
+
+.reset-password-back {
+    text-align: center;
+    margin-top: 20px;
+}
+
+
+    .reset-password-back a {
+        font-size: 13px;
+        color: #0d6efd;
+        text-decoration: none;
+    }
+
+
+        .reset-password-back a:hover {
+            text-decoration: underline;
+        }
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 576px) {
+
+    .reset-password-page {
+        padding: 25px 15px;
+    }
+
+
+    .reset-password-card {
+        padding: 30px 24px;
+        border-radius: 12px;
+    }
+
+
+    .reset-password-header h1 {
+        font-size: 22px;
+    }
+}
+
+/* =========================================
+   RESET PASSWORD SUCCESS
+========================================= */
+
+.reset-success-page {
+    min-height: calc(100vh - 130px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+}
+
+
+.reset-success-card {
+    width: 100%;
+    max-width: 460px;
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    padding: 40px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+}
+
+
+/* =========================================
+   HEADER
+========================================= */
+
+.reset-success-header {
+    margin-bottom: 28px;
+}
+
+
+.reset-success-status {
+    width: fit-content;
+    margin: 0 auto 18px;
+    padding: 7px 16px;
+    border-radius: 20px;
+    background: #d1fae5;
+    color: #047857;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+
+.reset-success-header h1 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 600;
+    color: #172033;
+}
+
+
+.reset-success-header p {
+    margin: 10px 0 0;
+    font-size: 13px;
+    line-height: 1.6;
+    color: #8a94a6;
+}
+
+
+/* =========================================
+   BUTTON
+========================================= */
+
+.reset-success-button {
+    width: 100%;
+    height: 46px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 576px) {
+
+    .reset-success-page {
+        padding: 25px 15px;
+    }
+
+
+    .reset-success-card {
+        padding: 30px 24px;
+        border-radius: 12px;
+    }
+
+
+    .reset-success-header h1 {
+        font-size: 21px;
+    }
+}
+
+/* =========================================
+   TWO FACTOR SETUP
+========================================= */
+
+.two-factor-page {
+    min-height: calc(100vh - 130px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+}
+
+
+.two-factor-card {
+    width: 100%;
+    max-width: 560px;
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    padding: 38px 40px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+}
+
+
+/* =========================================
+   HEADER
+========================================= */
+
+.two-factor-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+
+.two-factor-status {
+    display: inline-block;
+    padding: 6px 13px;
+    margin-bottom: 14px;
+    border-radius: 20px;
+    background: #eef4ff;
+    color: #0d6efd;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+
+.two-factor-header h1 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 600;
+    color: #172033;
+}
+
+
+.two-factor-header p {
+    margin: 8px auto 0;
+    max-width: 430px;
+    font-size: 13px;
+    line-height: 1.6;
+    color: #8a94a6;
+}
+
+
+/* =========================================
+   STEPS
+========================================= */
+
+.two-factor-step-title {
+    margin-bottom: 7px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #374151;
+}
+
+
+.two-factor-step p,
+.two-factor-manual p {
+    margin-bottom: 15px;
+    font-size: 13px;
+    line-height: 1.6;
+    color: #6b7280;
+}
+
+
+/* =========================================
+   QR CODE
+========================================= */
+
+.qrcode-wrapper {
+    width: 220px;
+    height: 220px;
+    margin: 20px auto;
+    padding: 10px;
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+#qrcode {
+    line-height: 0;
+}
+
+
+    #qrcode img {
+        display: block;
+    }
+
+
+/* =========================================
+   DIVIDER
+========================================= */
+
+.two-factor-divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin: 25px 0;
+    color: #9ca3af;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+
+    .two-factor-divider::before,
+    .two-factor-divider::after {
+        content: "";
+        flex: 1;
+        height: 1px;
+        background: #e5e7eb;
+    }
+
+
+/* =========================================
+   MANUAL KEY
+========================================= */
+
+.two-factor-manual {
+    margin-bottom: 28px;
+    padding: 16px;
+    background: #f8f9fb;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    text-align: center;
+}
+
+
+.shared-key {
+    margin-top: 10px;
+    padding: 10px 14px;
+    background: #ffffff;
+    border: 1px solid #d9dee7;
+    border-radius: 6px;
+    color: #374151;
+    font-family: monospace;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    word-break: break-all;
+    user-select: all;
+}
+
+
+/* =========================================
+   VERIFICATION
+========================================= */
+
+.verification-step {
+    margin-bottom: 18px;
+}
+
+
+.two-factor-code-group {
+    margin-bottom: 22px;
+    text-align: center;
+}
+
+
+    .two-factor-code-group label {
+        display: block;
+        margin-bottom: 10px;
+        font-size: 13px;
+        font-weight: 600;
+        color: #374151;
+    }
+
+
+.two-factor-code-input {
+    width: 220px;
+    height: 52px;
+    margin: 0 auto;
+    text-align: center;
+    border: 1px solid #d9dee7;
+    border-radius: 8px;
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: 6px;
+    box-shadow: none;
+}
+
+
+    .two-factor-code-input:focus {
+        border-color: #0d6efd;
+        box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.10);
+    }
+
+
+    .two-factor-code-input::placeholder {
+        color: #c3c8d0;
+        letter-spacing: 6px;
+    }
+
+
+/* =========================================
+   BUTTON
+========================================= */
+
+.two-factor-button {
+    width: 100%;
+    height: 46px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+
+/* =========================================
+   VALIDATION
+========================================= */
+
+.two-factor-card .alert-danger {
+    font-size: 13px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+
+.two-factor-card .text-danger {
+    display: block;
+    margin-top: 5px;
+    font-size: 12px;
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 576px) {
+
+    .two-factor-page {
+        padding: 25px 15px;
+    }
+
+
+    .two-factor-card {
+        padding: 30px 24px;
+        border-radius: 12px;
+    }
+
+
+    .two-factor-header h1 {
+        font-size: 21px;
+    }
+
+
+    .qrcode-wrapper {
+        width: 210px;
+        height: 210px;
+    }
+
+
+    .two-factor-code-input {
+        width: 200px;
+    }
+}
+
+
+/* =========================================
+   TWO FACTOR VERIFY
+========================================= */
+
+.two-factor-verify-page {
+    min-height: calc(100vh - 130px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+}
+
+
+.two-factor-verify-card {
+    width: 100%;
+    max-width: 460px;
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    padding: 38px 40px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+}
+
+
+/* =========================================
+   HEADER
+========================================= */
+
+.two-factor-verify-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+
+.two-factor-verify-status {
+    display: inline-block;
+    padding: 6px 13px;
+    margin-bottom: 14px;
+    border-radius: 20px;
+    background: #eef4ff;
+    color: #0d6efd;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+
+.two-factor-verify-header h1 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 600;
+    color: #172033;
+}
+
+
+.two-factor-verify-header p {
+    margin: 8px auto 0;
+    max-width: 380px;
+    font-size: 13px;
+    line-height: 1.6;
+    color: #8a94a6;
+}
+
+
+/* =========================================
+   CODE
+========================================= */
+
+.two-factor-verify-code-group {
+    margin-bottom: 22px;
+    text-align: center;
+}
+
+
+    .two-factor-verify-code-group label {
+        display: block;
+        margin-bottom: 10px;
+        font-size: 13px;
+        font-weight: 600;
+        color: #374151;
+    }
+
+
+.two-factor-verify-code-input {
+    width: 220px;
+    height: 54px;
+    margin: 0 auto;
+    text-align: center;
+    border: 1px solid #d9dee7;
+    border-radius: 8px;
+    font-size: 23px;
+    font-weight: 600;
+    letter-spacing: 7px;
+    box-shadow: none;
+}
+
+
+    .two-factor-verify-code-input:focus {
+        border-color: #0d6efd;
+        box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.10);
+    }
+
+
+    .two-factor-verify-code-input::placeholder {
+        color: #c3c8d0;
+        letter-spacing: 7px;
+    }
+
+
+/* =========================================
+   BUTTON
+========================================= */
+
+.two-factor-verify-button {
+    width: 100%;
+    height: 46px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+
+/* =========================================
+   INFO
+========================================= */
+
+.two-factor-verify-info {
+    margin-top: 20px;
+    padding-top: 18px;
+    border-top: 1px solid #eef0f4;
+    text-align: center;
+    font-size: 11px;
+    line-height: 1.5;
+    color: #8a94a6;
+}
+
+
+/* =========================================
+   VALIDATION
+========================================= */
+
+.two-factor-verify-card .alert-danger {
+    font-size: 13px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+
+.two-factor-verify-card .text-danger {
+    display: block;
+    margin-top: 6px;
+    font-size: 12px;
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 576px) {
+
+    .two-factor-verify-page {
+        padding: 25px 15px;
+    }
+
+
+    .two-factor-verify-card {
+        padding: 30px 24px;
+        border-radius: 12px;
+    }
+
+
+    .two-factor-verify-header h1 {
+        font-size: 21px;
+    }
+
+
+    .two-factor-verify-code-input {
+        width: 200px;
+        font-size: 21px;
+        letter-spacing: 6px;
+    }
+}
+
+/* =========================================
+   REGISTER
+========================================= */
+
+.register-page {
+    min-height: calc(100vh - 130px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+}
+
+
+.register-card {
+    width: 100%;
+    max-width: 500px;
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    padding: 38px 40px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+}
+
+
+/* =========================================
+   HEADER
+========================================= */
+
+.register-header {
+    text-align: center;
+    margin-bottom: 28px;
+}
+
+
+.register-status {
+    display: inline-block;
+    padding: 6px 13px;
+    margin-bottom: 14px;
+    border-radius: 20px;
+    background: #eef4ff;
+    color: #0d6efd;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+
+.register-header h1 {
+    margin: 0;
+    font-size: 25px;
+    font-weight: 600;
+    color: #172033;
+}
+
+
+.register-header p {
+    margin: 7px auto 0;
+    max-width: 400px;
+    font-size: 13px;
+    line-height: 1.6;
+    color: #8a94a6;
+}
+
+
+/* =========================================
+   FORM
+========================================= */
+
+.register-form-group {
+    margin-bottom: 18px;
+}
+
+
+    .register-form-group > label {
+        display: block;
+        margin-bottom: 8px;
+        font-size: 13px;
+        font-weight: 600;
+        color: #374151;
+    }
+
+
+    .register-form-group .form-control,
+    .register-form-group .form-select {
+        height: 46px;
+        border: 1px solid #d9dee7;
+        border-radius: 8px;
+        font-size: 14px;
+        box-shadow: none;
+    }
+
+
+    .register-form-group .form-control {
+        padding-left: 14px;
+        padding-right: 14px;
+    }
+
+
+        .register-form-group .form-control:focus,
+        .register-form-group .form-select:focus {
+            border-color: #0d6efd;
+            box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.10);
+        }
+
+
+        .register-form-group .form-control::placeholder {
+            color: #a5adba;
+        }
+
+
+/* =========================================
+   PASSWORD
+========================================= */
+
+.register-password-wrapper {
+    position: relative;
+}
+
+
+.register-password-input {
+    padding-right: 65px !important;
+}
+
+
+.register-password-toggle {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    border: none;
+    background: transparent;
+    color: #0d6efd;
+    cursor: pointer;
+    padding: 5px 7px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+
+    .register-password-toggle:hover {
+        color: #084298;
+    }
+
+
+/* =========================================
+   VALIDATION
+========================================= */
+
+.register-card .alert-danger {
+    font-size: 13px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+
+.register-card .text-danger {
+    display: block;
+    margin-top: 5px;
+    font-size: 12px;
+}
+
+
+/* =========================================
+   BUTTON
+========================================= */
+
+.register-button {
+    width: 100%;
+    height: 46px;
+    margin-top: 4px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+
+/* =========================================
+   LOGIN LINK
+========================================= */
+
+.register-login {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 13px;
+    color: #8a94a6;
+}
+
+
+    .register-login a {
+        color: #0d6efd;
+        text-decoration: none;
+        font-weight: 500;
+    }
+
+
+        .register-login a:hover {
+            text-decoration: underline;
+        }
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 576px) {
+
+    .register-page {
+        padding: 25px 15px;
+    }
+
+
+    .register-card {
+        padding: 30px 24px;
+        border-radius: 12px;
+    }
+
+
+    .register-header h1 {
+        font-size: 22px;
+    }
+}
+
+.login-register {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 13px;
+    color: #8a94a6;
+}
+
+    .login-register a {
+        color: #0d6efd;
+        text-decoration: none;
+        font-weight: 500;
+    }
+
+        .login-register a:hover {
+            text-decoration: underline;
+        }
+
+.login-forgot {
+    margin-top: 10px;
+    text-align: center;
+}
+
+    .login-forgot a {
+        font-size: 13px;
+        color: #0d6efd;
+        text-decoration: none;
+    }

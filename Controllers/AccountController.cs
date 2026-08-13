@@ -1,11 +1,12 @@
 ﻿using BuildingProposalSystem.Models.Entities;
 using BuildingProposalSystem.Models.ViewModels;
 using BuildingProposalSystem.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Caching.Memory;
 using System.Net;
-
 
 namespace BuildingProposalSystem.Controllers
 {
@@ -17,8 +18,6 @@ namespace BuildingProposalSystem.Controllers
         private readonly ILogger<AccountController> _logger;
         private readonly IMemoryCache _memoryCache;
         private readonly IEmailService _emailService;
-
-
 
         public AccountController(
             SignInManager<ApplicationUser> signInManager,
@@ -39,6 +38,7 @@ namespace BuildingProposalSystem.Controllers
 
         [HttpGet]
         [Route("Account/Masuk")]
+        [AllowAnonymous]
         public IActionResult Login()
         {
             return View();
@@ -47,6 +47,7 @@ namespace BuildingProposalSystem.Controllers
         [HttpPost]
         [Route("Account/Masuk")]
         [ValidateAntiForgeryToken]
+        [AllowAnonymous]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
             if (!ModelState.IsValid)
@@ -81,6 +82,16 @@ namespace BuildingProposalSystem.Controllers
                 return View(model);
             }
 
+            //cek user apakah isActive is true
+            if (!user.IsActive)
+            {
+                ModelState.AddModelError(
+                    string.Empty,
+                    "Akun Anda sudah dinonaktifkan. Silakan hubungi Administrator.");
+
+                return View(model);
+            }
+
             //cek password user dulu untuk pengecekan 2FA nya true,kalo true lanjut ke login result, kalo false, redirect ke halaman setup 2FA
             var passwordCheck = await _signInManager.CheckPasswordSignInAsync(user, model.Password, lockoutOnFailure: true);
 
@@ -97,7 +108,6 @@ namespace BuildingProposalSystem.Controllers
             }
 
             //cek 2FA, apabila masih false, maka redirect ke halaman 2FA
-
             if(!user.TwoFactorEnabled)
             {
                 var setupToken = Guid.NewGuid().ToString("N");
@@ -137,6 +147,7 @@ namespace BuildingProposalSystem.Controllers
 
         //Halaman setup 2FA untuk user yang BELUM pernah setup
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> SetupTwoFactor(string token)
         {
             if (string.IsNullOrEmpty(token) || !_memoryCache.TryGetValue($"2fa_setup_{token}", out string? userId))
@@ -173,6 +184,7 @@ namespace BuildingProposalSystem.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AllowAnonymous]
         public async Task<IActionResult> SetupTwoFactor(TwoFactorSetupViewModel model)
         {
 
@@ -212,6 +224,7 @@ namespace BuildingProposalSystem.Controllers
         // Halaman verify 2FA untuk user yang sudah PERNAH setup 2FA
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> VerifyTwoFactor(bool rememberMe = false)
         {
             var user = await _signInManager.GetTwoFactorAuthenticationUserAsync();
@@ -225,6 +238,7 @@ namespace BuildingProposalSystem.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AllowAnonymous]
         public async Task<IActionResult> VerifyTwoFactor(TwoFactorVerifyViewModel model)
         {
             if (!ModelState.IsValid)
@@ -270,6 +284,7 @@ namespace BuildingProposalSystem.Controllers
         // LUPA PASSWORD
 
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult ForgotPassword()
         {
             return View();
@@ -277,6 +292,7 @@ namespace BuildingProposalSystem.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AllowAnonymous]
         public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
         {
             if (!ModelState.IsValid)
@@ -322,6 +338,7 @@ namespace BuildingProposalSystem.Controllers
         // RESET PASSWORD
 
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult ResetPassword(string email, string token)
         {
             if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(token))
@@ -340,6 +357,7 @@ namespace BuildingProposalSystem.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AllowAnonymous]
         public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
         {
             if (!ModelState.IsValid)
@@ -372,5 +390,121 @@ namespace BuildingProposalSystem.Controllers
         }
 
 
+        //CHANGE PASSWORD
+        [HttpGet]
+        [Authorize]
+        public IActionResult ChangePassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return RedirectToAction("Login");
+            }
+
+            var result = await _userManager.ChangePasswordAsync(user, model.OldPassword, model.NewPassword);
+
+            if (!result.Succeeded)
+            {
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
+                return View(model);
+            }
+
+            await _signInManager.RefreshSignInAsync(user);
+
+            _logger.LogInformation("User {Email} berhasil mengubah password.", user.Email);
+
+            ViewBag.Message = "Password berhasil diubah.";
+            return View();
+        }
+
+
+        //REGITER USER 
+
+        [Authorize(Roles = "Admin")]
+        [HttpGet]
+        public IActionResult Register()
+        {
+            ViewBag.Roles = new SelectList(new[] { "Staff", "Manager", "Direktur" });
+            return View();
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Register(RegisterViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                ViewBag.Roles = new SelectList(new[] { "Staff", "Manager", "Direktur" });
+                return View(model);
+            }
+
+            var existingEmail = await _userManager.FindByEmailAsync(model.Email);
+            if (existingEmail != null)
+            {
+                ModelState.AddModelError(nameof(model.Email), "Email sudah terdaftar.");
+                ViewBag.Roles = new SelectList(new[] { "Staff", "Manager", "Direktur" });
+                return View(model);
+            }
+
+            var existingUsername = await _userManager.FindByNameAsync(model.Username);
+            if (existingUsername != null)
+            {
+                ModelState.AddModelError(nameof(model.Username), "Username sudah digunakan.");
+                ViewBag.Roles = new SelectList(new[] { "Staff", "Manager", "Direktur" });
+                return View(model);
+            }
+
+            var user = new ApplicationUser
+            {
+                UserName = model.Username,
+                Email = model.Email,
+                FullName = model.FullName,
+                IsActive = true,
+                CreatedDate = DateTime.UtcNow,
+                EmailConfirmed = true 
+            };
+
+            var result = await _userManager.CreateAsync(user, model.Password);
+
+            if (!result.Succeeded)
+            {
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
+                ViewBag.Roles = new SelectList(new[] { "Staff", "Manager", "Direktur" });
+                return View(model);
+            }
+
+            await _userManager.AddToRoleAsync(user, model.Role);
+
+            _logger.LogInformation("User baru terdaftar: {Email}, Role: {Role}", user.Email, model.Role);
+
+            return RedirectToAction("Login");
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult AccessDenied()
+        {
+            return View();
+        }
     }
 }

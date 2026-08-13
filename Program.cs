@@ -4,13 +4,22 @@ using BuildingProposalSystem.Models;
 using BuildingProposalSystem.Models.Entities;
 using BuildingProposalSystem.Services.Implementations;
 using BuildingProposalSystem.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews(options =>
+{
+    var policy = new AuthorizationPolicyBuilder()
+        .RequireAuthenticatedUser()
+        .Build();
+    options.Filters.Add(new AuthorizeFilter(policy));
+});
+
 
 // Tambahkan konfigurasi DbContext untuk menggunakan SQL Server
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -32,6 +41,17 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.ExpireTimeSpan = TimeSpan.FromHours(24); 
     options.SlidingExpiration = true; 
 });
+
+// Custom Halaman Access Denied 
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.ExpireTimeSpan = TimeSpan.FromHours(24);
+    options.SlidingExpiration = true;
+    options.LoginPath = "/Account/Masuk";          
+    options.AccessDeniedPath = "/Account/AccessDenied"; 
+});
+
+builder.Services.AddScoped<IUserManagementService, UserManagementService>();
 
 builder.Services.Configure<RecaptchaSettings>(builder.Configuration.GetSection("Recaptcha"));
 builder.Services.AddHttpClient<IRecaptchaService, RecaptchaService>();

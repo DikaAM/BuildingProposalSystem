@@ -4,6 +4,7 @@ using BuildingProposalSystem.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BuildingProposalSystem.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260813041636_AddBuildingProposal")]
+    partial class AddBuildingProposal
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -174,55 +177,6 @@ namespace BuildingProposalSystem.Data.Migrations
                     b.ToTable("BuildingProposals");
                 });
 
-            modelBuilder.Entity("BuildingProposalSystem.Models.Entities.ProposalAttachment", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("ContentType")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("FileExtension")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
-
-                    b.Property<long>("FileSize")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("OriginalFileName")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<Guid>("ProposalId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("StoredFileName")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<string>("UploadedBy")
-                        .IsRequired()
-                        .HasMaxLength(450)
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime>("UploadedDate")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProposalId");
-
-                    b.HasIndex("UploadedBy");
-
-                    b.ToTable("ProposalAttachments");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
@@ -374,25 +328,6 @@ namespace BuildingProposalSystem.Data.Migrations
                     b.Navigation("Updater");
                 });
 
-            modelBuilder.Entity("BuildingProposalSystem.Models.Entities.ProposalAttachment", b =>
-                {
-                    b.HasOne("BuildingProposalSystem.Models.Entities.BuildingProposal", "Proposal")
-                        .WithMany("Attachments")
-                        .HasForeignKey("ProposalId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("BuildingProposalSystem.Models.Entities.ApplicationUser", "Uploader")
-                        .WithMany()
-                        .HasForeignKey("UploadedBy")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Proposal");
-
-                    b.Navigation("Uploader");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -442,11 +377,6 @@ namespace BuildingProposalSystem.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("BuildingProposalSystem.Models.Entities.BuildingProposal", b =>
-                {
-                    b.Navigation("Attachments");
                 });
 #pragma warning restore 612, 618
         }
