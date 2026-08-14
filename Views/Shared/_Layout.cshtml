@@ -42,7 +42,7 @@
 
                 <div class="sidebar-menu">
 
-                    <div class="menu-section">
+                    @* <div class="menu-section">
                         MAIN
                     </div>
 
@@ -52,11 +52,8 @@
 
                         <i class="bi bi-grid-1x2-fill"></i>
                         <span>Dashboard</span>
-                    </a>
+                    </a> *@
 
-
-                    @if (User.IsInRole("Staff") || User.IsInRole("Admin"))
-                    {
                         <div class="menu-section">
                             PROPOSAL
                         </div>
@@ -68,33 +65,7 @@
                             <i class="bi bi-file-earmark-text"></i>
                             <span>Proposal Building</span>
                         </a>
-                    }
-
-
-                    @if (User.IsInRole("Manager") || User.IsInRole("Direktur") || User.IsInRole("Admin"))
-                    {
-                        <div class="menu-section">
-                            APPROVAL
-                        </div>
-
-                        <a asp-controller="Approval"
-                           asp-action="Index"
-                           class="sidebar-link">
-
-                            <i class="bi bi-check2-square"></i>
-                            <span>Approval Pengajuan</span>
-                        </a>
-
-                        <a asp-controller="Approval"
-                           asp-action="History"
-                           class="sidebar-link">
-
-                            <i class="bi bi-clock-history"></i>
-                            <span>Riwayat Approval</span>
-                        </a>
-                    }
-
-
+                                                           
                     @if (User.IsInRole("Admin"))
                     {
                         <div class="menu-section">
@@ -109,14 +80,14 @@
                             <span>User Management</span>
                         </a>
 
-                        <a asp-controller="Roles"
+                        @* <a asp-controller="Roles"
                            asp-action="Index"
                            class="sidebar-link">
 
                             <i class="bi bi-person-badge"></i>
                             <span>Role Management</span>
-                        </a>
-                    }
+                        </a> *@
+                    } 
 
                 </div>
 

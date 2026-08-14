@@ -3,8 +3,15 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BuildingProposalSystem.Models.ViewModels
 {
-    public class ProposalCreateViewModel
+    public class ProposalEditViewModel
     {
+        public Guid Id { get; set; }
+
+
+        [Display(Name = "Nomor Proposal")]
+        public string ProposalNumber { get; set; } = string.Empty;
+
+
         [Display(Name = "Tanggal Pengajuan")]
         [DataType(DataType.Date)]
         public DateTime? ProposalDate { get; set; }
@@ -29,7 +36,6 @@ namespace BuildingProposalSystem.Models.ViewModels
 
 
         [Display(Name = "Estimasi Biaya")]
-        [Range(0.01, double.MaxValue, ErrorMessage = "Estimasi biaya harus lebih besar dari nol.")]
         public decimal? EstimatedCost { get; set; }
 
 
@@ -37,11 +43,28 @@ namespace BuildingProposalSystem.Models.ViewModels
         public string? Description { get; set; }
 
 
+        [Display(Name = "Status")]
+        public string Status { get; set; } = string.Empty;
+
+
         [Display(Name = "Proposal PDF")]
         public IFormFile? ProposalFile { get; set; }
 
 
-     
+            public List<AttachmentListItemViewModel> Attachments { get; set; }
+            = new();
+
+
         public string Action { get; set; } = "Draft";
+
+        public bool CanEdit { get; set; }
+
+        public bool CanApprove { get; set; }
+
+        public bool IsRejected { get; set; }
+
+        public string? ApprovalComment { get; set; }
+
+        public string? RejectionReason { get; set; }
     }
 }

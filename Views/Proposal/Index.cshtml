@@ -2,6 +2,10 @@
 
 @{
     ViewData["Title"] = "Proposal Building";
+
+    var isAdmin = User.IsInRole("Admin");
+    var isManager = User.IsInRole("Manager");
+    var isDirektur = User.IsInRole("Direktur");
 }
 
 <div class="page-header">
@@ -26,6 +30,22 @@
 </div>
 
 
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success page-alert">
+        @TempData["SuccessMessage"]
+    </div>
+}
+
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger page-alert">
+        @TempData["ErrorMessage"]
+    </div>
+}
+
+
 <div class="content-card">
 
     <div class="content-card-header">
@@ -47,17 +67,31 @@
 
     <div class="table-responsive">
 
-        <table class="table">
+        <table id="proposalTable"
+               class="table user-management-table">
 
             <thead>
+
                 <tr>
+
                     <th>No. Proposal</th>
+
                     <th>Tanggal</th>
+
                     <th>Nama Gedung</th>
+
                     <th>Estimasi Biaya</th>
+
                     <th>Status</th>
+
+                    <th class="text-center">
+                        Aksi
+                    </th>
+
                 </tr>
+
             </thead>
+
 
             <tbody>
 
@@ -65,26 +99,184 @@
                 {
                     @foreach (var proposal in Model)
                     {
+                        /*
+                         * =====================================================
+                         * EDIT PERMISSION
+                         * =====================================================
+                         */
+
+                        var canEdit =
+                            proposal.Status == "Draft" ||
+                            proposal.Status == "Rejected";
+
+
+                        /*
+                         * =====================================================
+                         * APPROVAL PERMISSION
+                         *
+                         * Admin dapat approve pada level Manager
+                         * dan Direktur.
+                         *
+                         * Manager hanya pada WaitingManagerApproval.
+                         *
+                         * Direktur hanya pada WaitingDirectorApproval.
+                         * =====================================================
+                         */
+
+                        var canApprove =
+                            (isAdmin &&
+                             (
+                                 proposal.Status == "WaitingManagerApproval" ||
+                                 proposal.Status == "WaitingDirectorApproval"
+                             ))
+                            ||
+                            (isManager &&
+                             proposal.Status == "WaitingManagerApproval")
+                            ||
+                            (isDirektur &&
+                             proposal.Status == "WaitingDirectorApproval");
+
+
+                        /*
+                         * =====================================================
+                         * VIEW PERMISSION
+                         *
+                         * Proposal yang sudah submit tetap dapat dilihat.
+                         * Proposal yang sedang menunggu approval juga dapat
+                         * dibuka melalui halaman Edit/Review.
+                         * =====================================================
+                         */
+
+                        var canView =
+                            proposal.Status == "Submitted" ||
+                            proposal.Status == "WaitingManagerApproval" ||
+                            proposal.Status == "WaitingDirectorApproval" ||
+                            proposal.Status == "Rejected" ||
+                            proposal.Status == "Draft";
+
+
                         <tr>
 
                             <td>
                                 @proposal.ProposalNumber
                             </td>
 
+
                             <td>
                                 @proposal.ProposalDate.ToString("dd/MM/yyyy")
                             </td>
 
+
                             <td>
-                                @proposal.BuildingName
+                                <div class="table-user-name">
+                                    @proposal.BuildingName
+                                </div>
                             </td>
+
 
                             <td>
                                 Rp @proposal.EstimatedCost.ToString("N0")
                             </td>
 
+
                             <td>
-                                @proposal.Status
+
+                                @switch (proposal.Status)
+                                {
+                                    case "Draft":
+
+                                        <span class="status-badge status-inactive">
+                                            Draft
+                                        </span>
+
+                                        break;
+
+
+                                    case "WaitingManagerApproval":
+
+                                        <span class="status-badge status-active">
+                                            Menunggu Manager
+                                        </span>
+
+                                        break;
+
+
+                                    case "WaitingDirectorApproval":
+
+                                        <span class="status-badge status-active">
+                                            Menunggu Direktur
+                                        </span>
+
+                                        break;
+
+
+                                    case "Submitted":
+
+                                        <span class="status-badge status-active">
+                                            Submitted
+                                        </span>
+
+                                        break;
+
+
+                                    case "Rejected":
+
+                                        <span class="status-badge status-inactive">
+                                            Rejected
+                                        </span>
+
+                                        break;
+
+
+                                    default:
+
+                                        <span class="status-badge status-inactive">
+                                            @proposal.Status
+                                        </span>
+
+                                        break;
+                                }
+
+                            </td>
+
+
+                            <td>
+
+                                <div class="user-actions">
+
+                                    @if (canApprove)
+                                    {
+                                        <a asp-action="Edit"
+                                           asp-route-id="@proposal.Id"
+                                           class="btn btn-sm btn-outline-primary">
+                                            Review
+                                        </a>
+                                    }
+                                    else if (canEdit)
+                                    {
+                                        <a asp-action="Edit"
+                                           asp-route-id="@proposal.Id"
+                                           class="btn btn-sm btn-outline-primary">
+                                            Edit
+                                        </a>
+                                    }
+                                    else if (canView)
+                                    {
+                                        <a asp-action="Edit"
+                                           asp-route-id="@proposal.Id"
+                                           class="btn btn-sm btn-outline-primary">
+                                            View
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted">
+                                            -
+                                        </span>
+                                    }
+
+                                </div>
+
                             </td>
 
                         </tr>
@@ -93,7 +285,8 @@
                 else
                 {
                     <tr>
-                        <td colspan="5">
+
+                        <td colspan="6">
 
                             <div class="empty-state">
 
@@ -113,6 +306,7 @@
                             </div>
 
                         </td>
+
                     </tr>
                 }
 
@@ -123,3 +317,60 @@
     </div>
 
 </div>
+
+
+@section Scripts {
+
+    <script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
+
+    <script src="https://cdn.datatables.net/1.13.8/js/dataTables.bootstrap5.min.js"></script>
+
+
+    <script>
+
+        $(document).ready(function () {
+
+        $('#proposalTable').DataTable({
+
+        pageLength: 10,
+
+        lengthMenu: [
+        [5, 10, 25, 50, 100],
+        [5, 10, 25, 50, 100]
+        ],
+
+        ordering: true,
+
+        order: [
+        [1, 'desc']
+        ],
+
+        columnDefs: [
+        {
+        orderable: false,
+        targets: 5
+        }
+        ],
+
+        language: {
+        search: "Search:",
+        lengthMenu: "Show _MENU_ entries",
+        info: "Showing _START_ to _END_ of _TOTAL_ entries",
+        infoEmpty: "Showing 0 to 0 of 0 entries",
+        zeroRecords: "Data tidak ditemukan",
+        emptyTable: "Belum ada data proposal",
+        paginate: {
+        first: "First",
+        last: "Last",
+        next: "›",
+        previous: "‹"
+        }
+        }
+
+        });
+
+        });
+
+    </script>
+
+}

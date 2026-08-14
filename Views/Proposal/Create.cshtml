@@ -4,6 +4,23 @@
     ViewData["Title"] = "Buat Proposal";
 }
 
+<link rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      crossorigin="" />
+<style>
+    #proposalMap {
+        height: 400px;
+        width: 100%;
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+        #proposalMap .leaflet-container {
+            height: 100%;
+            width: 100%;
+        }
+</style>
+
 <div class="page-header">
     <div>
         <h1 class="page-header-title">Buat Proposal Baru</h1>
@@ -19,6 +36,7 @@
     </div>
 </div>
 
+
 @if (TempData["SuccessMessage"] != null)
 {
     <div class="alert alert-success page-alert">
@@ -26,25 +44,34 @@
     </div>
 }
 
+
 <div class="content-card">
 
     <div class="content-card-header">
         <div>
             <h2>Informasi Proposal</h2>
             <p>
-                Lengkapi informasi proposal sebelum menyimpan draft.
+                Lengkapi informasi proposal sebelum menyimpan draft atau mengirim pengajuan.
             </p>
         </div>
     </div>
 
+
     <div class="content-card-body">
 
-        <form asp-action="Create" method="post">
+        <form asp-action="Create"
+              method="post"
+              enctype="multipart/form-data">
 
             <div asp-validation-summary="ModelOnly"
                  class="alert alert-danger"
-                 role="alert"></div>
+                 role="alert">
+            </div>
 
+
+            <!-- ========================================================= -->
+            <!-- INFORMASI DASAR -->
+            <!-- ========================================================= -->
 
             <div class="form-section">
 
@@ -61,6 +88,7 @@
                         </label>
 
                         <input asp-for="ProposalDate"
+                               type="date"
                                class="form-control" />
 
                         <span asp-validation-for="ProposalDate"
@@ -68,6 +96,7 @@
                         </span>
 
                     </div>
+
 
                     <div class="col-md-6 mb-3">
 
@@ -90,11 +119,16 @@
             </div>
 
 
+            <!-- ========================================================= -->
+            <!-- LOKASI -->
+            <!-- ========================================================= -->
+
             <div class="form-section">
 
                 <div class="form-section-title">
                     Lokasi
                 </div>
+
 
                 <div class="mb-3">
 
@@ -105,8 +139,7 @@
                     <textarea asp-for="Address"
                               class="form-control"
                               rows="3"
-                              placeholder="Masukkan alamat lengkap lokasi pembangunan">
-                    </textarea>
+                              placeholder="Masukkan alamat lengkap lokasi pembangunan"></textarea>
 
                     <span asp-validation-for="Address"
                           class="text-danger">
@@ -114,14 +147,78 @@
 
                 </div>
 
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+                        Tentukan Lokasi Pada Map
+                    </label>
+
+                    <div id="proposalMap"
+                         style="height: 400px; width: 100%; border-radius: 8px;">
+                    </div>
+
+                    <div class="form-text mt-2">
+                        Klik lokasi pada map untuk menentukan Latitude dan Longitude.
+                    </div>
+
+                </div>
+
+
+                <div class="row">
+
+                    <div class="col-md-6 mb-3">
+
+                        <label asp-for="Latitude"
+                               class="form-label">
+                        </label>
+
+                        <input asp-for="Latitude"
+                               id="latitudeInput"
+                               class="form-control"
+                               placeholder="Contoh: -6.2000000"
+                               step="any" />
+
+                        <span asp-validation-for="Latitude"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+
+                    <div class="col-md-6 mb-3">
+
+                        <label asp-for="Longitude"
+                               class="form-label">
+                        </label>
+
+                        <input asp-for="Longitude"
+                               id="longitudeInput"
+                               class="form-control"
+                               placeholder="Contoh: 106.8166667"
+                               step="any" />
+
+                        <span asp-validation-for="Longitude"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+                </div>
+
             </div>
 
+
+            <!-- ========================================================= -->
+            <!-- DETAIL PROPOSAL -->
+            <!-- ========================================================= -->
 
             <div class="form-section">
 
                 <div class="form-section-title">
                     Detail Proposal
                 </div>
+
 
                 <div class="mb-3">
 
@@ -131,6 +228,9 @@
 
                     <input asp-for="EstimatedCost"
                            class="form-control"
+                           type="number"
+                           step="0.01"
+                           min="0"
                            placeholder="Masukkan estimasi biaya" />
 
                     <span asp-validation-for="EstimatedCost"
@@ -138,6 +238,7 @@
                     </span>
 
                 </div>
+
 
                 <div class="mb-3">
 
@@ -148,8 +249,7 @@
                     <textarea asp-for="Description"
                               class="form-control"
                               rows="5"
-                              placeholder="Jelaskan detail proposal pembangunan">
-                    </textarea>
+                              placeholder="Jelaskan detail proposal pembangunan"></textarea>
 
                     <span asp-validation-for="Description"
                           class="text-danger">
@@ -160,6 +260,45 @@
             </div>
 
 
+            <!-- ========================================================= -->
+            <!-- DOKUMEN PROPOSAL -->
+            <!-- ========================================================= -->
+
+            <div class="form-section">
+
+                <div class="form-section-title">
+                    Dokumen Proposal
+                </div>
+
+
+                <div class="mb-3">
+
+                    <label asp-for="ProposalFile"
+                           class="form-label">
+                    </label>
+
+                    <input asp-for="ProposalFile"
+                           type="file"
+                           class="form-control"
+                           accept=".pdf,application/pdf" />
+
+                    <div class="form-text">
+                        Format file yang diperbolehkan: PDF.
+                    </div>
+
+                    <span asp-validation-for="ProposalFile"
+                          class="text-danger">
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- ========================================================= -->
+            <!-- ACTION -->
+            <!-- ========================================================= -->
+
             <div class="form-actions">
 
                 <a asp-action="Index"
@@ -167,9 +306,20 @@
                     Batal
                 </a>
 
+
                 <button type="submit"
-                        class="btn btn-primary">
+                        name="Action"
+                        value="Draft"
+                        class="btn btn-outline-primary">
                     Simpan Draft
+                </button>
+
+
+                <button type="submit"
+                        name="Action"
+                        value="Submit"
+                        class="btn btn-primary">
+                    Submit Pengajuan
                 </button>
 
             </div>
@@ -185,4 +335,265 @@
 
     <partial name="_ValidationScriptsPartial" />
 
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+            crossorigin="">
+    </script>
+
+
+    <script>
+
+        document.addEventListener("DOMContentLoaded", function () {
+
+            const latitudeInput =
+                document.getElementById("latitudeInput");
+
+            const longitudeInput =
+                document.getElementById("longitudeInput");
+
+            const mapElement =
+                document.getElementById("proposalMap");
+
+
+            /*
+             * Default location.
+             * Jakarta digunakan hanya sebagai posisi awal map.
+             * User tetap harus menentukan lokasi sebenarnya.
+             */
+
+            const defaultLatitude = -6.2000000;
+            const defaultLongitude = 106.8166667;
+
+
+            const existingLatitude =
+                parseFloat(latitudeInput.value);
+
+            const existingLongitude =
+                parseFloat(longitudeInput.value);
+
+
+            const hasExistingLocation =
+                !isNaN(existingLatitude) &&
+                !isNaN(existingLongitude);
+
+
+            const initialLatitude =
+                hasExistingLocation
+                    ? existingLatitude
+                    : defaultLatitude;
+
+
+            const initialLongitude =
+                hasExistingLocation
+                    ? existingLongitude
+                    : defaultLongitude;
+
+
+            /*
+             * Initialize map
+             */
+
+            const map = L.map(mapElement).setView(
+                [initialLatitude, initialLongitude],
+                hasExistingLocation ? 15 : 11
+            );
+
+
+            /*
+             * OpenStreetMap
+             */
+
+            L.tileLayer(
+                "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {
+                    maxZoom: 19,
+                    attribution:
+                        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+                }
+            ).addTo(map);
+
+
+            /*
+             * Marker
+             */
+
+            let marker = null;
+
+
+            /*
+             * Set marker + coordinates
+             */
+
+            function setLocation(latitude, longitude) {
+
+                latitude = parseFloat(latitude);
+                longitude = parseFloat(longitude);
+
+
+                if (isNaN(latitude) ||
+                    isNaN(longitude)) {
+
+                    return;
+                }
+
+
+                if (latitude < -90 ||
+                    latitude > 90) {
+
+                    return;
+                }
+
+
+                if (longitude < -180 ||
+                    longitude > 180) {
+
+                    return;
+                }
+
+
+                latitudeInput.value =
+                    latitude.toFixed(7);
+
+                longitudeInput.value =
+                    longitude.toFixed(7);
+
+
+                if (marker === null) {
+
+                    marker = L.marker(
+                        [latitude, longitude],
+                        {
+                            draggable: true
+                        }
+                    ).addTo(map);
+
+
+                    /*
+                     * User can drag marker.
+                     */
+
+                    marker.on("dragend", function () {
+
+                        const position =
+                            marker.getLatLng();
+
+                        setLocation(
+                            position.lat,
+                            position.lng
+                        );
+
+                    });
+
+                }
+                else {
+
+                    marker.setLatLng(
+                        [latitude, longitude]
+                    );
+
+                }
+
+
+                map.setView(
+                    [latitude, longitude],
+                    Math.max(map.getZoom(), 15)
+                );
+            }
+
+
+            /*
+             * Existing location
+             */
+
+            if (hasExistingLocation) {
+
+                setLocation(
+                    existingLatitude,
+                    existingLongitude
+                );
+            }
+
+
+            /*
+             * Click map
+             */
+
+            map.on("click", function (event) {
+
+                setLocation(
+                    event.latlng.lat,
+                    event.latlng.lng
+                );
+
+            });
+
+
+            /*
+             * Manual Latitude input
+             */
+
+            latitudeInput.addEventListener(
+                "change",
+                function () {
+
+                    const latitude =
+                        parseFloat(latitudeInput.value);
+
+                    const longitude =
+                        parseFloat(longitudeInput.value);
+
+                    if (!isNaN(latitude) &&
+                        !isNaN(longitude)) {
+
+                        setLocation(
+                            latitude,
+                            longitude
+                        );
+                    }
+
+                }
+            );
+
+
+            /*
+             * Manual Longitude input
+             */
+
+            longitudeInput.addEventListener(
+                "change",
+                function () {
+
+                    const latitude =
+                        parseFloat(latitudeInput.value);
+
+                    const longitude =
+                        parseFloat(longitudeInput.value);
+
+                    if (!isNaN(latitude) &&
+                        !isNaN(longitude)) {
+
+                        setLocation(
+                            latitude,
+                            longitude
+                        );
+                    }
+
+                }
+            );
+
+
+            /*
+             * Fix Leaflet rendering when
+             * map is inside dynamic container.
+             */
+
+            setTimeout(function () {
+
+                map.invalidateSize();
+
+            }, 100);
+
+        });
+
+    </script>
 }

@@ -24,5 +24,7 @@ namespace BuildingProposalSystem.Models.Entities
         public ApplicationUser? Creator { get; set; }
         public ApplicationUser? Updater { get; set; }
         public ICollection<ProposalAttachment> Attachments { get; set; } = new List<ProposalAttachment>();
+        public ICollection<ApprovalHistory> ApprovalHistories { get; set; }
+    = new List<ApprovalHistory>();
     }
 }

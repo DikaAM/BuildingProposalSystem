@@ -59,10 +59,33 @@ namespace BuildingProposalSystem.Data
                       .HasForeignKey(e => e.UploadedBy)
                       .OnDelete(DeleteBehavior.Restrict);
             });
+
+            modelBuilder.Entity<ApprovalHistory>(entity =>
+            {
+                entity.Property(e => e.Action)
+                    .HasMaxLength(20);
+
+                entity.Property(e => e.Comment)
+                    .HasMaxLength(1000);
+
+                entity.Property(e => e.ApprovedBy)
+                    .HasMaxLength(450);
+
+                entity.HasOne(e => e.Proposal)
+                    .WithMany(p => p.ApprovalHistories)
+                    .HasForeignKey(e => e.ProposalId)
+                    .OnDelete(DeleteBehavior.Cascade);
+
+                entity.HasOne(e => e.Approver)
+                    .WithMany()
+                    .HasForeignKey(e => e.ApprovedBy)
+                    .OnDelete(DeleteBehavior.Restrict);
+            });
         }
 
         public DbSet<BuildingProposal> BuildingProposals { get; set; }
         public DbSet<ProposalAttachment> ProposalAttachments { get; set; }
+        public DbSet<ApprovalHistory> ApprovalHistories { get; set; }
 
     }
 }

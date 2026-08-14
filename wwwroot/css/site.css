@@ -1922,3 +1922,19 @@ textarea.form-control {
 .user-dropdown-menu .dropdown-divider {
     margin: 0;
 }
+
+/* DataTables spacing */
+#proposalTable_wrapper > .row {
+    padding-left: 16px;
+    padding-right: 16px;
+}
+
+    #proposalTable_wrapper > .row:first-child {
+        padding-top: 8px;
+        padding-bottom: 8px;
+    }
+
+    #proposalTable_wrapper > .row:last-child {
+        padding-top: 8px;
+        padding-bottom: 8px;
+    }

@@ -131,7 +131,7 @@ namespace BuildingProposalSystem.Controllers
 
             if (result.Succeeded)
             {
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "Proposal");
             }
 
             if (result.IsLockedOut)
@@ -218,7 +218,7 @@ namespace BuildingProposalSystem.Controllers
 
             await _signInManager.SignInAsync(user, isPersistent: false);
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Proposal");
         }
 
         // Halaman verify 2FA untuk user yang sudah PERNAH setup 2FA
@@ -257,7 +257,7 @@ namespace BuildingProposalSystem.Controllers
 
             if (result.Succeeded)
             {
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "Proposal");
             }
 
             if (result.IsLockedOut)
