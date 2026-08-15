@@ -4,6 +4,7 @@ using BuildingProposalSystem.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
 namespace BuildingProposalSystem.Controllers
@@ -14,15 +15,19 @@ namespace BuildingProposalSystem.Controllers
         private readonly IProposalService _proposalService;
         private readonly ILogger<ProposalController> _logger;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IWebHostEnvironment _environment;
+
 
         public ProposalController(
             IProposalService proposalService,
             ILogger<ProposalController> logger,
-            UserManager<ApplicationUser> userManager)
+            UserManager<ApplicationUser> userManager,
+            IWebHostEnvironment environment)
         {
             _proposalService = proposalService;
             _logger = logger;
             _userManager = userManager;
+            _environment = environment;
         }
 
 
@@ -751,6 +756,7 @@ namespace BuildingProposalSystem.Controllers
                     new { id });
             }
         }
+
         //POST REJECT
 
         [HttpPost]
@@ -851,6 +857,39 @@ namespace BuildingProposalSystem.Controllers
                     nameof(Edit),
                     new { id });
             }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> DownloadAttachment(Guid id)
+        {
+            var attachment = await _proposalService.GetAttachmentAsync(id);
+
+            if (attachment == null)
+            {
+                return NotFound();
+            }
+
+            var filePath =
+                Path.Combine(
+                    _environment.WebRootPath,
+                    "uploads",
+                    "proposals",
+                    attachment.StoredFileName);
+
+            if (!System.IO.File.Exists(filePath))
+            {
+                return NotFound();
+            }
+
+            var contentType =
+                string.IsNullOrWhiteSpace(attachment.ContentType)
+                    ? "application/pdf"
+                    : attachment.ContentType;
+
+            return PhysicalFile(
+                filePath,
+                contentType,
+                attachment.OriginalFileName);
         }
     }
 }

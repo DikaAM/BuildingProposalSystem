@@ -413,7 +413,12 @@
                             <div class="current-file mb-2">
 
                                 <div class="current-file-name">
-                                    @attachment.OriginalFileName
+                                    <a asp-controller="Proposal"
+                                       asp-action="DownloadAttachment"
+                                       asp-route-id="@attachment.Id"
+                                       class="text-decoration-none">
+                                        @attachment.OriginalFileName
+                                    </a>
                                 </div>
 
                                 <div class="current-file-info">

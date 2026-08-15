@@ -1148,5 +1148,11 @@ namespace BuildingProposalSystem.Services.Implementations
                         .ToList()
             };
         }
+
+        public async Task<ProposalAttachment?> GetAttachmentAsync(Guid id)
+        {
+            return await _context.ProposalAttachments
+                .FirstOrDefaultAsync(x => x.Id == id);
+        }
     }
 }

@@ -1,4 +1,5 @@
-﻿using BuildingProposalSystem.Models.ViewModels;
+﻿using BuildingProposalSystem.Models.Entities;
+using BuildingProposalSystem.Models.ViewModels;
 
 namespace BuildingProposalSystem.Services.Interfaces
 {
@@ -38,5 +39,7 @@ namespace BuildingProposalSystem.Services.Interfaces
             string userId,
             string userRole,
             string? comment);
+
+        Task<ProposalAttachment?> GetAttachmentAsync(Guid id);
     }
 }
